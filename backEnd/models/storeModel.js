@@ -5,7 +5,7 @@ async function selectStores(){
         const res = await pool.query('SELECT * FROM loja');
         return res.rows;
     }catch(erro){
-        console.error('Erro ao selecionar usuários', erro.message)
+        console.error('Erro ao selecionar lojas', erro.message)
     }
 }
 
@@ -17,7 +17,7 @@ async function selectStore(id_loja){
         const res = await pool.query(query, value);
         return res.rows[0];
     }catch(erro){
-        console.error('Erro ao tentar selecionar usuário', erro.message);
+        console.error('Erro ao tentar selecionar loja', erro.message);
     }
 }
 async function insertStore( nome_loja, endereco, telefone){

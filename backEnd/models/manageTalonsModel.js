@@ -91,38 +91,6 @@ async function updateTalonsEnviados(id_envio, id_talao, id_loja, quantidade_envi
     }
 }
 
-
-// const updateTalonQuery = `
-//     UPDATE public.talao 
-//     SET data_recebimento = TO_DATE($4, 'DD/MM/YYYY'), status = 'Recebido' 
-//     WHERE id_talao = $1 RETURNING *;
-// `;
-
-// async function insertRecebimentoTalon(id_talao, id_loja, quantidade_recebida, data_recebimento) {
-//     const queryRecebimento = `
-//         INSERT INTO public.recebimento_talao (id_talao, id_loja, quantidade_recebida, data_recebimento)
-//         VALUES ($1, $2, $3, TO_DATE($4, 'DD/MM/YYYY')) RETURNING *;
-//     `;
-    
-//     const values = [id_talao, id_loja, quantidade_recebida, data_recebimento];
-
-//     try {
-//         await pool.query(queryRecebimento, values); // Registro de recebimento
-
-//         // Atualizando o talão apenas se o recebimento for bem-sucedido
-//         const talon = await pool.query(updateTalonQuery, values);
-
-//         return talon.rows[0];
-//     } catch (error) {
-//         console.error('Erro ao registrar recebimento de talão:', error);
-//         throw error;
-//     }
-// }
-
-
-
-
-
 async function selectTalonsEnviados() {
     const query = `
         SELECT 
