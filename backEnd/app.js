@@ -6,8 +6,11 @@ const talonRoutes = require('../backEnd/routes/talonRoutes');
 const profileRoutes = require('../backEnd/routes/profileRoutes');
 const stockRoutes = require('../backEnd/routes/stockRoutes');
 
+// import cors from "cors";
+// app.use(cors());
+
 //Provisorio:
-const dashboardRoutes = require('../backEnd/routes/dashboardRoutes')
+// const dashboardRoutes = require('../backEnd/routes/dashboardRoutes')
 
 app.use(express.json());
 
@@ -22,6 +25,6 @@ app.use('/api/profile', profileRoutes);
 app.use('/api/stock', stockRoutes)
 
 //provisorio
-app.use('/dashboard', dashboardRoutes);
+// app.use('/dashboard', dashboardRoutes);
 
 module.exports = app;

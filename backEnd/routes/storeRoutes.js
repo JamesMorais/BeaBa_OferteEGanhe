@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
 });
 
 // Rota para obter todas as lojas
-router.get('/stores', StoreController.getAllStores);
+router.get('/stores', StoreController.getStores);
 
 // Rota para obter uma loja específica pelo ID
 router.get('/stores/:id', StoreController.getStoreById);

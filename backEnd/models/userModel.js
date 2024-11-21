@@ -20,6 +20,20 @@ async function selectUser(matricula){
         throw erro;
     }
 }
+
+async function selectUserByEmail(email) {
+    const query = `SELECT * FROM usuario WHERE email = $1`;
+    const values = [email];
+
+    try {
+        const res = await pool.query(query, values);
+        return res.rows[0];
+    } catch (erro) {
+        console.error('Erro ao buscar usuário por email', erro.message);
+        throw erro;
+    }
+}
+
 async function insertUser(matricula, nome, email, senha, data_cadastro){
     const query = `
      INSERT INTO usuario(matricula, nome, email, senha, data_cadastro) 
@@ -67,4 +81,4 @@ async function deleteUser(matricula){
         throw erro;
     }
 }
-module.exports = {selectUsers, selectUser, insertUser, updateUser, deleteUser};
+module.exports = {selectUsers, selectUser, selectUserByEmail, insertUser, updateUser, deleteUser};
