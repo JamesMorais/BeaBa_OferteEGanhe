@@ -4,7 +4,7 @@ const {associateProfile} = require('../models/associationModel')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = "sua-chave-secreta-aqui";
+const SECRET_KEY = "chave-secreta";
 
 
 class UserController {
@@ -96,7 +96,7 @@ class UserController {
             }
 
             // Gera o token JWT
-            const token = jwt.sign({ id: usuario.matricula, email: usuario.email }, SECRET_KEY, { expiresIn: '1h' });
+            const token = jwt.sign({ id: usuario.matricula, email: usuario.email }, SECRET_KEY, { expiresIn: '8h' });
 
             res.status(200).json({ message: 'Login bem-sucedido', token });
         } catch (erro) {
