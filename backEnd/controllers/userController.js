@@ -4,7 +4,7 @@ const {associateProfile} = require('../models/associationModel')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = "chave-secreta";
+const SECRET_KEY = process.env.SECRET_KEY;
 
 
 class UserController {
@@ -57,7 +57,7 @@ class UserController {
     // }
 
     static async registerUser(req, res) {
-        const { matricula, nome, email, senha, data_cadastro, perfis } = req.body;
+        const { matricula, nome,  email, senha, data_cadastro, perfis } = req.body;
     
         try {
             // Criptografa a senha

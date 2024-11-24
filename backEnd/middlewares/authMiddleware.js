@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const SECRET_KEY = "chave-secreta";
+const SECRET_KEY = process.env.SECRET_KEY;
 
 function authenticateToken(req, res, next) {
     const token = req.header('Authorization')?.split(" ")[1]; // Token no formato "Bearer <token>"
@@ -17,5 +17,5 @@ function authenticateToken(req, res, next) {
         return res.status(403).json({ message: 'Token inválido' });
     }
 }
-
+ 
 module.exports = authenticateToken;
