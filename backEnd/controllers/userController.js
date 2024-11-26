@@ -31,30 +31,6 @@ class UserController {
         }
     }
 
-    // static async registerUser(req, res) {
-    //     // const { matricula, nome, email, senha, data_cadastro } = req.body;
-    //     // try {
-    //     //     const novoUsuario = await insertUser(matricula, nome, email, senha, data_cadastro);
-    //     //     res.status(201).json({ message: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
-    //     // } catch (erro) {
-    //     //     res.status(500).json({ message: 'Erro ao cadastrar usuário', error: erro.message });
-    //     // }
-    //     const { matricula, nome, email, senha, data_cadastro, perfis } = req.body;
-
-    //     try {
-    //         const novoUsuario = await insertUser(matricula, nome, email, senha, data_cadastro);
-    
-    //         if (perfis && perfis.length > 0) {
-    //             for (const perfilId of perfis) {
-    //                 await associateProfile(novoUsuario.matricula, perfilId);
-    //             }
-    //         }
-    
-    //         res.status(201).json({ message: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
-    //     } catch (error) {
-    //         res.status(500).json({ message: 'Erro ao cadastrar usuário', error: error.message });
-    //     }
-    // }
 
     static async registerUser(req, res) {
         const { matricula, nome,  email, senha, data_cadastro, perfis } = req.body;

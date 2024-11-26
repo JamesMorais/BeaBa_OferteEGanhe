@@ -11,16 +11,38 @@ const viewRoutes = require('../backEnd/routes/viewRoutes');
 // import cors from "cors";
 // app.use(cors());
 
-// Provisorio:
-// const dashboardRoutes = require('../backEnd/routes/dashboardRoutes')
 
 app.use(express.json());
 
-// Aqui você está usando o path, agora que ele está importado, não ocorrerá o erro
+
 app.use(express.static(path.join(__dirname, '../frontEnd/public')));
+
+
+// app.use(express.static(path.join(__dirname, 'frontEnd/public')));
+
+// app.use(express.static(path.join(__dirname, 'frontEnd/public')));
+
+// app.use((req, res, next) => {
+//     console.log('Servindo arquivo:', req.url);
+//     next();
+// });
+
 
 app.get('/', (req, res) => {
     res.send('Servidor rodando!');
+});
+
+
+// app.get('/register', (req, res) => {
+//     res.sendFile(path.join(__dirname, '../frontEnd/public/cadastroUsuario.html'));
+// });
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontEnd/public/views/cadastroUsuario.html'));
+});
+
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/login.html'));
 });
 
 app.use('/api/user', userRoutes);
@@ -29,9 +51,11 @@ app.use('/api/talon', talonRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/stock', stockRoutes);
 
-app.use('/pages', viewRoutes);
+// app.use('/pages', viewRoutes);
 
 //provisorio
 // app.use('/dashboard', dashboardRoutes);
 
 module.exports = app;
+
+// O problema acontecia enquanto o verbo get e a rota register estava dentro de viewRoutes, depois que passei para cá não deu mais problema 
