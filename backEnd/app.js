@@ -1,5 +1,7 @@
 const express = require('express');
-const path = require('path');  // Adicione esta linha para importar o módulo path
+const path = require('path');
+const cors = require('cors'); 
+
 const app = express();
 const userRoutes = require('../backEnd/routes/userRoutes');
 const storeRoutes = require('../backEnd/routes/storeRoutes');
@@ -7,35 +9,32 @@ const talonRoutes = require('../backEnd/routes/talonRoutes');
 const profileRoutes = require('../backEnd/routes/profileRoutes');
 const stockRoutes = require('../backEnd/routes/stockRoutes');
 const viewRoutes = require('../backEnd/routes/viewRoutes');
+const authenticateToken = require('../backEnd/middlewares/authMiddleware');
+const authorizePermission = require('../backEnd/middlewares/authorizePermission');
 
-// import cors from "cors";
-// app.use(cors());
-
-
+// Middleware para JSON
 app.use(express.json());
 
+// Middleware CORS (aplicado globalmente)
+app.use(cors());
 
+// Rota protegida
+app.get(
+    '/secure-endpoint',
+    authenticateToken,
+    authorizePermission('Cadastrar Novo Envio'),
+    (req, res) => {
+        res.send('Você tem permissão para acessar esta rota.');
+    }
+);
+
+// Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, '../frontEnd/public')));
 
-
-// app.use(express.static(path.join(__dirname, 'frontEnd/public')));
-
-// app.use(express.static(path.join(__dirname, 'frontEnd/public')));
-
-// app.use((req, res, next) => {
-//     console.log('Servindo arquivo:', req.url);
-//     next();
-// });
-
-
+// Rotas principais
 app.get('/', (req, res) => {
     res.send('Servidor rodando!');
 });
-
-
-// app.get('/register', (req, res) => {
-//     res.sendFile(path.join(__dirname, '../frontEnd/public/cadastroUsuario.html'));
-// });
 
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontEnd/public/views/cadastroUsuario.html'));
@@ -45,17 +44,11 @@ app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/login.html'));
 });
 
+// APIs
 app.use('/api/user', userRoutes);
 app.use('/api/store', storeRoutes);
 app.use('/api/talon', talonRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/stock', stockRoutes);
 
-// app.use('/pages', viewRoutes);
-
-//provisorio
-// app.use('/dashboard', dashboardRoutes);
-
 module.exports = app;
-
-// O problema acontecia enquanto o verbo get e a rota register estava dentro de viewRoutes, depois que passei para cá não deu mais problema 
