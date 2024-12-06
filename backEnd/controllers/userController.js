@@ -32,12 +32,29 @@ class UserController {
         }
     }
 
-    static async registerUser(req, res) {
-        const { matricula, nome, email, senha, data_cadastro, perfis } = req.body;
+    // static async registerUser(req, res) {
+    //     const { matricula, nome, email, senha, data_cadastro, perfis } = req.body;
     
+    //     try {
+    //         const senhaCriptografada = await bcrypt.hash(senha, 10);
+    //         const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada, data_cadastro);
+    
+    //         if (perfis && perfis.length > 0) {
+    //             for (const perfilId of perfis) {
+    //                 await associateProfile(matricula, perfilId);
+    //             }
+    //         }
+    
+    //         res.status(201).json({ message: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
+    //     } catch (error) {
+    //         res.status(500).json({ message: 'Erro ao cadastrar usuário', error: error.message });
+    //     }
+    // }
+    static async registerUser(req, res) {
+        const { matricula, nome, email, senha, perfis } = req.body; // Removendo data_cadastro
         try {
             const senhaCriptografada = await bcrypt.hash(senha, 10);
-            const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada, data_cadastro);
+            const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada);
     
             if (perfis && perfis.length > 0) {
                 for (const perfilId of perfis) {
@@ -85,9 +102,9 @@ class UserController {
 
     static async updateUser(req, res) {
         const matricula = req.params.matricula;
-        const { nome, email, senha, data_cadastro } = req.body;
+        const { nome, email, senha /*, data_cadastro */} = req.body;
         try {
-            const usuarioAtualizado = await updateUser(matricula, nome, email, senha, data_cadastro);
+            const usuarioAtualizado = await updateUser(matricula, nome, email, senha /*, data_cadastro*/);
             if (usuarioAtualizado) {
                 res.status(200).json({ message: 'Usuário atualizado com sucesso!', usuario: usuarioAtualizado });
             } else {

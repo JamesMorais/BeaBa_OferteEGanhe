@@ -8,11 +8,11 @@ form.addEventListener('submit', async (event) => {
     const matricula = document.getElementById('matricula').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('password').value;
-    const dataCadastro = document.getElementById('data_cadastro').value;
+    // const dataCadastro = document.getElementById('data_cadastro').value;
 
     // Verifica se a data foi preenchida e ajusta o formato para 'DD/MM/YYYY'
-    const [ano, mes, dia] = dataCadastro.split('-');
-    const dataFormatada = `${dia}/${mes}/${ano}`;
+    // const [ano, mes, dia] = dataCadastro.split('-');
+    // const dataFormatada = `${dia}/${mes}/${ano}`;
 
     // Prepara os dados para envio
     const userData = {
@@ -20,7 +20,7 @@ form.addEventListener('submit', async (event) => {
         matricula,
         email,
         senha,
-        data_cadastro: dataFormatada, // Usa a data formatada
+        // data_cadastro: dataFormatada, // Usa a data formatada
     };
 
     try {
