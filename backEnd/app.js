@@ -9,6 +9,7 @@ const talonRoutes = require('../backEnd/routes/talonRoutes');
 const profileRoutes = require('../backEnd/routes/profileRoutes');
 const stockRoutes = require('../backEnd/routes/stockRoutes');
 const viewRoutes = require('../backEnd/routes/viewRoutes');
+const dashboardRoutes = require('../backEnd/routes/dashboardRoutes');
 const authenticateToken = require('../backEnd/middlewares/authMiddleware');
 const authorizePermission = require('../backEnd/middlewares/authorizePermission');
 
@@ -45,6 +46,9 @@ app.get('/login', (req, res) => {
 app.get('/loja', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoLoja.html'));
 });
+app.get('/envio', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/envioTalao.html'));
+});
 
 // APIs
 app.use('/api/user', userRoutes);
@@ -52,5 +56,7 @@ app.use('/api/store', storeRoutes);
 app.use('/api/talon', talonRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/stock', stockRoutes);
+// Nova rota para o dashboard
+app.use('/api/dashboard', dashboardRoutes);
 
 module.exports = app;

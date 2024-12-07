@@ -26,21 +26,40 @@ class TalonController {
         }
     }
 
+    // static async updateTalonEnvio(req, res) {
+    //     const id_talao = req.params.id_talao;
+    //     const { id_envio, id_loja, quantidade_enviada, data_envio } = req.body;
+
+    //     if (!id_envio || !id_talao || !id_loja || !quantidade_enviada || !data_envio) {
+    //         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+    //     }
+
+    //     try {
+    //         const updatedTalon = await manageTalonsModel.updateTalonsEnviados(data_envio);
+    //         res.status(200).json({ message: 'Talão enviado atualizado com sucesso.', updatedTalon });
+    //     } catch (error) {
+    //         console.error('Erro na atualização do talão enviado:', error);
+    //         res.status(500).json({ error: 'Erro ao atualizar o talão enviado.' });
+    //     }
+    // }
+
     static async updateTalonEnvio(req, res) {
-        const { id_envio, id_talao, id_loja, quantidade_enviada, data_envio } = req.body;
-
-        if (!id_envio || !id_talao || !id_loja || !quantidade_enviada || !data_envio) {
-            return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+        const id_talao = req.params.id_talao;  // Agora pega o id_talao da URL
+        const { data_envio } = req.body;  // Apenas data_envio é necessária
+    
+        if (!id_talao || !data_envio) {
+            return res.status(400).json({ error: 'id_talao e data_envio são obrigatórios.' });
         }
-
+    
         try {
-            const updatedTalon = await manageTalonsModel.updateTalonsEnviados(id_envio, id_talao, id_loja, quantidade_enviada, data_envio);
+            const updatedTalon = await manageTalonsModel.updateTalonsEnviados(id_talao, data_envio);  // Chama a função passando id_talao
             res.status(200).json({ message: 'Talão enviado atualizado com sucesso.', updatedTalon });
         } catch (error) {
             console.error('Erro na atualização do talão enviado:', error);
             res.status(500).json({ error: 'Erro ao atualizar o talão enviado.' });
         }
     }
+    
 
     static async deleteTalon(req, res) {
         const id_talao = req.params.id_talao;
@@ -85,6 +104,15 @@ class TalonController {
             res.json(talonsEnviados);
         } catch (erro) {
             res.status(500).json({ message: 'Não foi possível selecionar talões enviados', error: erro.message });
+        }
+    }
+    static async getTalonsEnviadosById(req, res) {
+        const id_talao = req.params.id_talao;
+        try {
+            const talonEnviado = await manageTalonsModel.selectTalonEnviadoById(id_talao);
+            res.json(talonEnviado);
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível selecionar o talões enviado pelo id', error: erro.message });
         }
     }
 

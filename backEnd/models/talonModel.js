@@ -8,8 +8,7 @@ async function selectTalons() {
             t.data_recebimento, 
             t.status, 
             t.id_loja,
-            l.nome_loja,  
-            l.endereco    
+            l.nome_loja 
         FROM 
             public.talao AS t
         JOIN 
@@ -33,8 +32,7 @@ async function selectTalon(id_talao) {
             t.data_recebimento, 
             t.status, 
             t.id_loja,
-            l.nome_loja,
-            l.endereco
+            l.nome_loja
         FROM 
             public.talao AS t
         JOIN 

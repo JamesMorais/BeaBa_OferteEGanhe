@@ -68,20 +68,43 @@ async function insertRecebimentoTalon(id_talao, id_loja, quantidade_recebida, da
         client.release();
     }
 }
-async function updateTalonsEnviados(id_envio, id_talao, id_loja, quantidade_enviada, data_envio) {
+// async function updateTalonsEnviados(id_envio, id_talao, id_loja, quantidade_enviada, data_envio) {
+//     const updateQuery = `
+//         UPDATE public.envio_talao
+//         SET id_talao = $2, id_loja = $3, quantidade_enviada = $4, data_envio = $5
+//         WHERE id_envio = $1
+//         RETURNING *;
+//     `;
+//     const values = [id_envio, id_talao, id_loja, quantidade_enviada, data_envio];
+
+//     try {
+//         const result = await pool.query(updateQuery, values);
+
+//         if (result.rows.length === 0) {
+//             throw new Error('Envio de talão não encontrado para atualização.');
+//         }
+
+//         return result.rows[0]; // Retorna o talão atualizado
+//     } catch (error) {
+//         console.error('Erro ao atualizar talão enviado:', error);
+//         throw error;
+//     }
+// }
+
+async function updateTalonsEnviados(id_talao, data_envio) {
     const updateQuery = `
         UPDATE public.envio_talao
-        SET id_talao = $2, id_loja = $3, quantidade_enviada = $4, data_envio = $5
-        WHERE id_envio = $1
+        SET data_envio = $2
+        WHERE id_talao = $1
         RETURNING *;
     `;
-    const values = [id_envio, id_talao, id_loja, quantidade_enviada, data_envio];
+    const values = [id_talao, data_envio];
 
     try {
         const result = await pool.query(updateQuery, values);
 
         if (result.rows.length === 0) {
-            throw new Error('Envio de talão não encontrado para atualização.');
+            throw new Error('Talão não encontrado para atualização.');
         }
 
         return result.rows[0]; // Retorna o talão atualizado
@@ -91,6 +114,7 @@ async function updateTalonsEnviados(id_envio, id_talao, id_loja, quantidade_envi
     }
 }
 
+
 async function selectTalonsEnviados() {
     const query = `
         SELECT 
@@ -99,9 +123,8 @@ async function selectTalonsEnviados() {
             t.data_envio AS data_talao_envio,
             e.quantidade_enviada,
             e.data_envio AS data_envio_real,
-            t.status,
-            l.nome_loja,
-            l.endereco
+            t.status, -- Coluna de status adicionada
+            l.nome_loja
         FROM 
             public.envio_talao AS e
         JOIN 
@@ -118,6 +141,64 @@ async function selectTalonsEnviados() {
         throw error;
     }
 }
+
+async function selectTalonEnviadoById(id_talao){
+    const query = `
+        SELECT 
+            e.id_envio,
+            t.id_talao,
+            t.data_envio AS data_talao_envio,
+            e.quantidade_enviada,
+            e.data_envio AS data_envio_real,
+            t.status, -- Coluna de status adicionada
+            l.nome_loja
+        FROM 
+            public.envio_talao AS e
+        JOIN 
+            public.talao AS t ON e.id_talao = t.id_talao
+        JOIN 
+            public.loja AS l ON e.id_loja = l.id_loja
+        WHERE 
+            t.id_talao = $1;
+    `;
+    const value = [id_talao]
+    try{
+        const res = await pool.query(query, value);
+        return res.rows; 
+    }catch(error){
+        console.error('Erro ao buscar talões enviados:', error);
+        throw error;
+    }
+
+}
+
+
+// async function selectTalonsEnviados() {
+//     const query = `
+//         SELECT 
+//             e.id_envio,
+//             t.id_talao,
+//             t.data_envio AS data_talao_envio,
+//             e.quantidade_enviada,
+//             e.data_envio AS data_envio_real,
+//             t.status,
+//             l.nome_loja
+//         FROM 
+//             public.envio_talao AS e
+//         JOIN 
+//             public.talao AS t ON e.id_talao = t.id_talao
+//         JOIN 
+//             public.loja AS l ON e.id_loja = l.id_loja;
+//     `;
+    
+//     try {
+//         const res = await pool.query(query);
+//         return res.rows;
+//     } catch (error) {
+//         console.error('Erro ao buscar talões enviados:', error);
+//         throw error;
+//     }
+// }
 async function selectTalonsRecebidos() {
     const query = `
         SELECT 
@@ -127,8 +208,7 @@ async function selectTalonsRecebidos() {
             r.quantidade_recebida,
             r.data_recebimento AS data_recebimento_real,
             t.status,
-            l.nome_loja,
-            l.endereco
+            l.nome_loja
         FROM 
             public.recebimento_talao AS r
         JOIN 
@@ -147,4 +227,4 @@ async function selectTalonsRecebidos() {
 }
 
 
-module.exports = {insertEnvioTalon, insertRecebimentoTalon, selectTalonsEnviados, selectTalonsRecebidos, updateTalonsEnviados }; 
+module.exports = {insertEnvioTalon, insertRecebimentoTalon, selectTalonsEnviados, selectTalonEnviadoById, selectTalonsRecebidos, updateTalonsEnviados }; 
