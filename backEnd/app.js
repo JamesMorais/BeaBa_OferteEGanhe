@@ -12,13 +12,12 @@ const viewRoutes = require('../backEnd/routes/viewRoutes');
 const authenticateToken = require('../backEnd/middlewares/authMiddleware');
 const authorizePermission = require('../backEnd/middlewares/authorizePermission');
 
-// Middleware para JSON
+
 app.use(express.json());
 
-// Middleware CORS (aplicado globalmente)
 app.use(cors());
 
-// Rota protegida
+// Rota protegida teste
 app.get(
     '/secure-endpoint',
     authenticateToken,
@@ -42,6 +41,9 @@ app.get('/register', (req, res) => {
 
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/login.html'));
+});
+app.get('/loja', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoLoja.html'));
 });
 
 // APIs

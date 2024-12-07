@@ -9,12 +9,14 @@ router.get('/', (req, res) => {
 });
 
 // Rota para obter todas as lojas
-router.get('/stores', authenticateToken, StoreController.getStores);
+router.get('/stores', /*authenticateToken,*/ StoreController.getStores);
 
 // Rota para obter uma loja específica pelo ID
-router.get('/stores/:id', authenticateToken, StoreController.getStoreById);
+router.get('/stores/:id', /*authenticateToken,*/ StoreController.getStoreById);
 
 // Rota para cadastrar uma nova loja
-router.post('/register/store', authenticateToken, StoreController.createStore);
+router.post('/register/store', /*authenticateToken,*/ StoreController.createStore);
+router.put('/stores/edit/:id_loja', StoreController.editStore);
+router.delete('/delete/:id', StoreController.deletingStore);
 
 module.exports = router;

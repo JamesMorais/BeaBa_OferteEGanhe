@@ -1,25 +1,122 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        body {
+            background-color: #204637;
+        }
+
+        .login-container {
+            margin-top: 5%;
+            margin-bottom: 5%;
+        }
+
+
+        .login-form-2 {
+            padding: 5% 0;
+            background: #D4D0D0;
+        }
+
+        .login-form-2 h3 {
+            text-align: center;
+            color: #000000;
+            font-weight: 600;
+        }
+
+        .login-container form {
+            padding: 10%;
+        }
+
+        .btnSubmit {
+            width: 100%;
+            height: calc(1.5em + 0.75rem + 2px);
+            border-radius: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #008D53;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group a {
+            color: #000000;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .ForgetPwd {
+            display: block;
+            text-align: center;
+            /* Centraliza o link */
+        }
+
+
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 5%;
+            background: linear-gradient(180deg, #008D53 17%, #025734 100%);
+        }
+
+        .login-form-2 {
+            padding: 5%;
+            flex: 1;
+            max-width: 100%;
+            background: #D4D0D0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="login-form">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-md-5 image-container">
+                <img src="../images/Group 1090@2x.svg" alt="SVG Image">
             </div>
-            <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" name="senha" required>
+            <div class="col-md-5 login-form-2">
+                <h3>Conecte-se</h3>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input id="email" type="email" name="email" class="form-control"
+                            placeholder="Digite seu email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input id="password" type="password" name="senha" class="form-control"
+                            placeholder="Digite sua senha" />
+                    </div>
+                    <div class="form-group">
+                        <!-- <input type="submit" class="btnSubmit" value="Login" /> -->
+                        <button type="submit" class="btnSubmit">Login</button>
+                    </div>
+                    <div class="form-group">
+                        <a href="#" class="ForgetPwd">Esqueceu a senha?</a>
+                    </div>
+                </form>
             </div>
-            <button type="submit" class="submit-btn">Entrar</button>
-        </form>
+        </div>
     </div>
     <script src="../pages/login.js"></script>
 </body>
+
 </html>

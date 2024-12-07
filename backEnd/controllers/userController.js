@@ -32,26 +32,8 @@ class UserController {
         }
     }
 
-    // static async registerUser(req, res) {
-    //     const { matricula, nome, email, senha, data_cadastro, perfis } = req.body;
-    
-    //     try {
-    //         const senhaCriptografada = await bcrypt.hash(senha, 10);
-    //         const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada, data_cadastro);
-    
-    //         if (perfis && perfis.length > 0) {
-    //             for (const perfilId of perfis) {
-    //                 await associateProfile(matricula, perfilId);
-    //             }
-    //         }
-    
-    //         res.status(201).json({ message: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
-    //     } catch (error) {
-    //         res.status(500).json({ message: 'Erro ao cadastrar usuário', error: error.message });
-    //     }
-    // }
     static async registerUser(req, res) {
-        const { matricula, nome, email, senha, perfis } = req.body; // Removendo data_cadastro
+        const { matricula, nome, email, senha, perfis } = req.body; 
         try {
             const senhaCriptografada = await bcrypt.hash(senha, 10);
             const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada);
@@ -98,22 +80,6 @@ class UserController {
         }
     }
     
- 
-
-    static async updateUser(req, res) {
-        const matricula = req.params.matricula;
-        const { nome, email, senha /*, data_cadastro */} = req.body;
-        try {
-            const usuarioAtualizado = await updateUser(matricula, nome, email, senha /*, data_cadastro*/);
-            if (usuarioAtualizado) {
-                res.status(200).json({ message: 'Usuário atualizado com sucesso!', usuario: usuarioAtualizado });
-            } else {
-                res.status(404).json({ message: 'Usuário não encontrado' });
-            }
-        } catch (erro) {
-            res.status(500).json({ message: 'Erro ao tentar atualizar usuário', error: erro.message });
-        }
-    }
 
     static async deleteUser(req, res) {
         const matricula = req.params.matricula;
@@ -127,7 +93,36 @@ class UserController {
             res.status(500).json({ message: 'Erro ao tentar excluir usuário', error: erro.message });
         }
     }
+    static async updateUser(req, res) {
+        const matricula = req.params.matricula;  
+        const { nome, email, senha } = req.body; 
+    
+        try {
+           
+            const usuarioExistente = await selectUser(matricula);
+            if (!usuarioExistente) {
+                return res.status(404).json({ message: 'Usuário não encontrado' });
+            }
+    
+            // Se a senha foi fornecida, criptografa a senha antes de atualizar
+            let senhaAtualizada = senha;
+            if (senha) {
+                senhaAtualizada = await bcrypt.hash(senha, 10);
+            }
+    
+            
+            const usuarioAtualizado = await updateUser(matricula, nome, email, senhaAtualizada);
+            
+            if (usuarioAtualizado) {
+                res.status(200).json({ message: 'Usuário atualizado com sucesso!', usuario: usuarioAtualizado });
+            } else {
+                res.status(400).json({ message: 'Erro ao atualizar o usuário' });
+            }
+        } catch (erro) {
+            res.status(500).json({ message: 'Erro ao tentar atualizar usuário', error: erro.message });
+        }
+    }
+    
 }
 
 module.exports = UserController;
- 
