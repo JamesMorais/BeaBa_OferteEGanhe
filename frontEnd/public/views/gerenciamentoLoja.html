@@ -154,7 +154,9 @@
                 #D4D7D8;
         }
 
-        #btnNewPls, #btnNew, #btnNewPlse {
+        #btnNewPls,
+        #btnNew,
+        #btnNewPlse {
             background-color: #204637;
             border-color: #204637;
         }
@@ -167,6 +169,7 @@
             .table-responsive {
                 overflow: auto;
             }
+
         }
     </style>
 </head>
@@ -184,56 +187,67 @@
                 </div>
             </div>
             <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="/conta" class="sidebar-link">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Acessar Conta</span>
+                    </a>
+                </li>
                 <hr>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/usuario" class="sidebar-link">
                         <i class="bi bi-person-fill"></i>
                         <span>Gestão de usuários</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/perfil" class="sidebar-link">
                         <i class="bi bi-people-fill"></i>
                         <span>Gestão de Perfis</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/associacao" class="sidebar-link">
+                        <i class="bi bi-person-lines-fill"></i>
+                        <span>Associação de Perfis</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/loja" class="sidebar-link">
                         <i class="bi bi-shop"></i>
                         <span>Gestão de Lojas</span>
                     </a>
                 </li>
                 <hr>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/envio" class="sidebar-link">
                         <i class="bi bi-send"></i>
                         <span>Envio</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/estoque" class="sidebar-link">
                         <i class="bi bi-box-fill"></i>
                         <span>Estoque</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/recebimento" class="sidebar-link">
                         <i class="bi bi-send-check-fill"></i>
                         <span>Recebimento</span>
                     </a>
                 </li>
                 <hr>
                 <li class="sidebar-item">
-                    <a href="#" class="sidebar-link">
+                    <a href="/dashboard" class="sidebar-link">
                         <i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
-
             </ul>
             <div class="sidebar-footer">
-                <a href="#" class="sidebar-link">
-                    <i class="lni lni-exit"></i>
+                <a href="/logout" class="sidebar-link">
+                    <i class="bi bi-box-arrow-left"></i>
                     <span>Logout</span>
                 </a>
             </div>
@@ -318,8 +332,7 @@
                             <label for="edit-matricula">Código da Loja</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control rounded-3" id="edit-name"
-                                placeholder="Nome da Loja">
+                            <input type="text" class="form-control rounded-3" id="edit-name" placeholder="Nome da Loja">
                             <label for="edit-name">Nome da Loja</label>
                         </div>
                         <div class="d-flex gap-5">
@@ -396,14 +409,14 @@
                     rowReorder: true,
                     paging: true,
                     pageLength: 5,
-                    pagingType: 'simple',// Itens por página
+                    pagingType: 'simple', // Itens por página
                     responsive: true, // Ativa responsividade
                     lengthMenu: [5], // Opções de itens por página
                     language: {
-                        url: "//cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json"
-                    }, stateSave: true
+                        url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+                    },
+                    stateSave: true
                 });
-
             } catch (error) {
                 console.error('Erro ao carregar lojas:', error);
                 alert('Erro ao carregar lojas. Tente novamente mais tarde.');

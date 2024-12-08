@@ -85,12 +85,13 @@ async function fetchAndRenderEnvios() {
             rowReorder: true,
             paging: true,
             pageLength: 5,
-            pagingType: 'simple',
-            responsive: true, 
-            lengthMenu: [5], 
+            pagingType: 'simple', // Itens por página
+            responsive: true, // Ativa responsividade
+            lengthMenu: [5], // Opções de itens por página
             language: {
-                url: "//cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json"
-            }, stateSave: true
+                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+            },
+            stateSave: true
         });
         console.log('Tabela renderizada com sucesso.');
 

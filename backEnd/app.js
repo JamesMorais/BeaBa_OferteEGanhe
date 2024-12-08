@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
     res.send('Servidor rodando!');
 });
 
-app.get('/register', (req, res) => {
+app.get('/usuario', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontEnd/public/views/cadastroUsuario.html'));
 });
 
@@ -49,7 +49,24 @@ app.get('/loja', (req, res) => {
 app.get('/envio', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/envioTalao.html'));
 });
-
+app.get('/recebimento', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/recebimentoTalao.html'));
+});
+app.get('/perfil', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoPerfil.html'));
+});
+app.get('/associacao', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoPerfilAssc.html'));
+});
+app.get('/estoque', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoEstoque.html'));
+});
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/dashboard.html'));
+});
+app.get('/conta', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/conta.html'));
+});
 // APIs
 app.use('/api/user', userRoutes);
 app.use('/api/store', storeRoutes);
