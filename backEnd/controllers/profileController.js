@@ -1,4 +1,5 @@
 const { selectProfiles, selectProfile, insertProfile, updateProfile, deleteProfile } = require('../models/profileModel');
+const { associateProfile, selectProfilesUsers, deleteProfileUser, selectProfileUser, updatePerfilAssc } = require('../models/associationModel')
 
 class ProfileController {
 
@@ -25,6 +26,27 @@ class ProfileController {
         }
     }
 
+    static async getAssociatedProfilesUsers(req, res) {
+        try {
+            const perfisAssociadosUsers = await selectProfilesUsers();
+            res.json(perfisAssociadosUsers);
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível selecionar perfis', error: erro.message });
+        }
+    }
+    static async getAssociatedProfilesUsersById(req, res){
+        const matricula = req.params.matricula;
+        try {
+            const perfilUser = await selectProfileUser(matricula);
+            if (perfilUser) {
+                res.json(perfilUser);
+            } else {
+                res.status(404).json({ message: 'Perfil Assocido não encontrado' });
+            }
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível selecionar perfil associado', error: erro.message });
+        }
+    }
     static async registerProfile(req, res) {
         const { nome_perfil, descricao } = req.body;
         try {
@@ -49,6 +71,29 @@ class ProfileController {
             res.status(500).json({ message: 'Não foi possível atualizar perfil', error: erro.message });
         }
     }
+    static async updateProfileAssociated(req, res) {
+        const matricula = req.params.matricula;
+        const { id_perfil } = req.body;
+    
+        // Validate input
+        if (!id_perfil) {
+            return res.status(400).json({ message: 'ID do perfil é obrigatório.' });
+        }
+    
+        try {
+            // Call the function that updates the associated profile in the database
+            const perfilAtualizado = await updatePerfilAssc(matricula, id_perfil); // Ensure this function is defined
+    
+            if (perfilAtualizado) {
+                res.status(200).json({ message: 'Perfil Associado atualizado com sucesso!', profile: perfilAtualizado });
+            } else {
+                res.status(404).json({ message: 'Perfil Associado não encontrado' });
+            }
+        } catch (erro) {
+            console.error('Erro ao atualizar perfil associado:', erro); // Log the error for debugging
+            res.status(500).json({ message: 'Não foi possível atualizar perfil associado', error: erro.message });
+        }
+    }
 
     static async deleteProfile(req, res) {
         const id_perfil = req.params.id_perfil;
@@ -60,6 +105,41 @@ class ProfileController {
             res.status(204).send();
         } catch (erro) {
             res.status(500).json({ message: 'Não foi possível deletar perfil', error: erro.message });
+        }
+    }
+    // PARTE RELACIONADA A ASSOCIAÇÃO ENTRE PERFIL E USUARIO
+    static async associateProfileUser(req, res) {
+        const { matricula, id_perfil } = req.body; // Extraindo os dados do corpo da requisição
+
+        // Verificando se matricula e id_perfil foram fornecidos
+        if (!matricula || !id_perfil) {
+            return res.status(400).json({ message: 'Matricula e id_perfil são obrigatórios' });
+        }
+
+        try {
+            const associacaoPerfil = await associateProfile(matricula, id_perfil);
+
+            // Se a associação for bem-sucedida, retornamos uma resposta de sucesso
+            res.status(201).json({ message: 'Perfil associado com sucesso!', profile: { matricula, id_perfil } });
+        } catch (erro) {
+            // Se ocorrer um erro, retornamos uma mensagem de erro
+            if (erro.code === '23503') { // Código de erro para violação de chave estrangeira
+                return res.status(404).json({ message: 'Matricula ou perfil não encontrado' });
+            }
+            res.status(500).json({ message: 'Não foi possível associar perfil a usuário', error: erro.message });
+        }
+    }
+
+    static async deleteAssociations(req, res) {
+        const matricula = req.params.matricula;
+        try {
+            const perfilUserDeletado = await deleteProfileUser(matricula);
+            if (perfilUserDeletado === 0) {
+                return res.status(404).json({ message: 'Matricula ou perfil não encontrados' });
+            }
+            res.status(204).send();
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível deletar essa associação', error: erro.message });
         }
     }
 }

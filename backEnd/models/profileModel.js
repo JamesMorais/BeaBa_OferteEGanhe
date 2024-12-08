@@ -60,7 +60,7 @@ async function deleteProfile(id_perfil){
         const res = await pool.query(query, value);
         return res.rowCount;
     }catch(erro){
-        console.error('Erro ao deletar talão', erro.message);
+        console.error('Erro ao deletar perfil', erro.message);
         throw erro;
     }
 }
