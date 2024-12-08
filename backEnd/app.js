@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const cors = require('cors'); 
+const cors = require('cors');
+const cookieParser = require('cookie-parser'); // Importando cookie-parser
 
 const app = express();
 const userRoutes = require('../backEnd/routes/userRoutes');
@@ -15,8 +16,11 @@ const authorizePermission = require('../backEnd/middlewares/authorizePermission'
 
 
 app.use(express.json());
-
-app.use(cors());
+app.use(cookieParser()); // Adicionando o middleware cookie-parser
+app.use(cors({
+    origin: 'http://localhost:3000', // Substitua pelo seu domínio frontend
+    credentials: true
+}));
 
 // Rota protegida teste
 app.get(
