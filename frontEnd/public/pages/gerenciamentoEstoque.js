@@ -105,9 +105,9 @@ function editStock(id_loja) {
     // Busca os dados do estoque pelo id_loja
     fetch(`http://localhost:3000/api/stock/stocks/${id_loja}`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
+        // headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        // },
     })
         .then((response) => response.json())
         .then((estoqueArray) => {
@@ -156,7 +156,7 @@ document.getElementById('form-editar-estoque').addEventListener('submit', async 
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(userData)
         });

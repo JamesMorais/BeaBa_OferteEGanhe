@@ -7,6 +7,10 @@ form.addEventListener('submit', async (event) => {
     const id_loja = document.getElementById('codigo').value;
     const nome_loja = document.getElementById('name').value;
 
+    if (!id_loja || !nome_loja) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
 
 
     // Prepara os dados para envio
@@ -43,9 +47,9 @@ function editStore(id_loja) {
     // Enviar uma solicitação para buscar os dados do usuário com base na matrícula
     fetch(`http://localhost:3000/api/store/stores/${id_loja}`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        // headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+        // }
     })
         .then(response => response.json())
         .then(loja => {
@@ -76,7 +80,11 @@ document.getElementById('edit-user-form').addEventListener('submit', async funct
     const id_loja = document.getElementById('edit-matricula').value;
     const nome_loja = document.getElementById('edit-name').value;
 
-
+    if (!id_loja || !nome_loja) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+    }
+    
     const userData = {
         id_loja,
         nome_loja,
@@ -87,7 +95,7 @@ document.getElementById('edit-user-form').addEventListener('submit', async funct
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(userData)
         });

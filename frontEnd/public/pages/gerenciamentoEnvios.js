@@ -111,9 +111,9 @@ function editEnvio(id_talao) {
     // Enviar uma solicitação para buscar os dados do envio com base no id_talao
     fetch(`http://localhost:3000/api/talon/enviados/${id_talao}`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        // headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+        // }
     })
     .then(response => response.json())
     .then(envio => {
@@ -152,7 +152,7 @@ document.getElementById('form-editar-envio').addEventListener('submit', async fu
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(envioData)
         });

@@ -54,9 +54,9 @@ function editUser(matricula) {
     // Enviar uma solicitação para buscar os dados do usuário com base na matrícula
     fetch(`http://localhost:3000/api/user/users/${matricula}`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+        // headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+        // }
     })
     .then(response => response.json())
     .then(user => {
@@ -101,7 +101,7 @@ document.getElementById('edit-user-form').addEventListener('submit', async funct
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(userData)
         });

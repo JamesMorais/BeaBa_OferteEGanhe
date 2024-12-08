@@ -130,9 +130,9 @@ function editPerfilAssc(matricula) {
     // Busca os dados do perfil associado pela matrícula
     fetch(`http://localhost:3000/api/profile/associated/${matricula}`, {
         method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
+        // headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        // },
     })
     .then((response) => {
         if (!response.ok) {
@@ -175,7 +175,7 @@ document.getElementById('modalEditarPerfilAssc').addEventListener('submit', asyn
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                // 'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(perfilAsscData)
         });
