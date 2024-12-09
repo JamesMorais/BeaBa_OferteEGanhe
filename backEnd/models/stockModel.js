@@ -2,7 +2,7 @@ const pool = require('../config/dataBase');
 
 async function selectStocks(){
     try {
-        const res = await pool.query('SELECT * FROM vw_estoque_talao');
+        const res = await pool.query('SELECT * FROM estoque_talao');
         return res.rows;
     } catch (erro) {
         console.error('Erro ao selecionar estoque', erro.message);
@@ -10,7 +10,7 @@ async function selectStocks(){
 }
 
 async function selectStockByStore(id_loja){
-    const query = 'SELECT * FROM vw_estoque_talao WHERE id_loja = $1';
+    const query = 'SELECT * FROM estoque_talao WHERE id_loja = $1';
     const values = [id_loja];
     try {
         const res = await pool.query(query, values);

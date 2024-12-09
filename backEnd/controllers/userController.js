@@ -32,18 +32,29 @@ class UserController {
         }
     }
 
-    static async registerUser(req, res) {
-        const { matricula, nome, email, senha, perfis } = req.body;
+    // static async registerUser(req, res) {
+    //     const { matricula, nome, email, senha, perfis } = req.body;
+    //     try {
+    //         const senhaCriptografada = await bcrypt.hash(senha, 10);
+    //         const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada);
+
+    //         if (perfis && perfis.length > 0) {
+    //             for (const perfilId of perfis) {
+    //                 await associateProfile(matricula, perfilId);
+    //             }
+    //         }
+
+    //         res.status(201).json({ message: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
+    //     } catch (error) {
+    //         res.status(500).json({ message: 'Erro ao cadastrar usuário', error: error.message });
+    //     }
+    // }
+    static async registerUser (req, res) {
+        const { matricula, nome, email, senha } = req.body; // Removido perfis
         try {
             const senhaCriptografada = await bcrypt.hash(senha, 10);
-            const novoUsuario = await insertUser(matricula, nome, email, senhaCriptografada);
-
-            if (perfis && perfis.length > 0) {
-                for (const perfilId of perfis) {
-                    await associateProfile(matricula, perfilId);
-                }
-            }
-
+            const novoUsuario = await insertUser (matricula, nome, email, senhaCriptografada);
+    
             res.status(201).json({ message: 'Usuário cadastrado com sucesso!', usuario: novoUsuario });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao cadastrar usuário', error: error.message });
@@ -79,48 +90,85 @@ class UserController {
     //         res.status(500).json({ message: 'Erro ao efetuar login', error: error.message });
     //     }
     // }
-    static async loginUser(req, res) {
-        const { email, senha } = req.body;
+    // static async loginUser(req, res) {
+    //     const { email, senha } = req.body;
 
+    //     try {
+    //         const usuario = await selectUserByEmail(email);
+    //         if (!usuario) {
+    //             return res.status(404).json({ message: 'Usuário não encontrado' });
+    //         }
+
+    //         const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+    //         if (!senhaCorreta) {
+    //             return res.status(401).json({ message: 'Credenciais inválidas' });
+    //         }
+
+    //         const profiles = await getProfilesForUser(usuario.matricula);
+    //         const permissions = await getPermissionsForUser(usuario.matricula);
+
+    //         // const token = jwt.sign(
+    //         //     { id: usuario.matricula, email: usuario.email, profiles, permissions },
+    //         //     SECRET_KEY,
+    //         //     { expiresIn: '8h' }
+    //         // );
+    //         const token = jwt.sign(
+    //             { id: usuario.matricula, email: usuario.email, profiles, permissions },
+    //             SECRET_KEY,
+    //             { expiresIn: '8h' }
+    //         );
+    //         res.cookie('token', token, {
+    //             httpOnly: true, // O cookie não pode ser acessado via JavaScript
+    //             secure: process.env.NODE_ENV === 'production', // Usar apenas em HTTPS em produção
+    //             maxAge: 8 * 60 * 60 * 1000, // 8 horas
+    //             sameSite: 'Strict' // Adicione esta linha para maior segurança
+    //         });
+
+    //         res.status(200).json({ message: 'Login bem-sucedido' });
+    //     } catch (error) {
+    //         res.status(500).json({ message: 'Erro ao efetuar login', error: error.message });
+    //     }
+    // }
+    static async loginUser (req, res) {
+        const { email, senha } = req.body;
+    
         try {
             const usuario = await selectUserByEmail(email);
             if (!usuario) {
                 return res.status(404).json({ message: 'Usuário não encontrado' });
             }
-
+    
             const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
             if (!senhaCorreta) {
                 return res.status(401).json({ message: 'Credenciais inválidas' });
             }
-
-            const profiles = await getProfilesForUser(usuario.matricula);
-            const permissions = await getPermissionsForUser(usuario.matricula);
-
+    
+            // Buscando perfis e permissões
+            const profiles = await getProfilesForUser (usuario.matricula);
+            const permissions = await getPermissionsForUser (usuario.matricula);
+    
+            // Verifique se as funções estão retornando os dados corretamente
+            console.log('Perfis:', profiles);
+            console.log('Permissões:', permissions);
+    
             const token = jwt.sign(
                 { id: usuario.matricula, email: usuario.email, profiles, permissions },
                 SECRET_KEY,
                 { expiresIn: '8h' }
             );
-
-            // Definindo o cookie com o token
-            // res.cookie('token', token, {
-            //     httpOnly: true, // O cookie não pode ser acessado via JavaScript
-            //     secure: process.env.NODE_ENV === 'production', // Usar apenas em HTTPS em produção
-            //     maxAge: 8 * 60 * 60 * 1000 // 8 horas
-            // });
+    
             res.cookie('token', token, {
-                httpOnly: true, // O cookie não pode ser acessado via JavaScript
-                secure: process.env.NODE_ENV === 'production', // Usar apenas em HTTPS em produção
-                maxAge: 8 * 60 * 60 * 1000, // 8 horas
-                sameSite: 'Strict' // Adicione esta linha para maior segurança
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 8 * 60 * 60 * 1000,
+                sameSite: 'Strict'
             });
-
+    
             res.status(200).json({ message: 'Login bem-sucedido' });
         } catch (error) {
             res.status(500).json({ message: 'Erro ao efetuar login', error: error.message });
         }
     }
-
     static async doLogout(req, res) {
         try {
             // Limpa o cookie do token

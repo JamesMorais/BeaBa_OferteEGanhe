@@ -26,7 +26,7 @@ app.use(cors({
 app.get(
     '/secure-endpoint',
     authenticateToken,
-    authorizePermission('Cadastrar Novo Envio'),
+    authorizePermission('Visualizar Histórico de Envios'),
     (req, res) => {
         res.send('Você tem permissão para acessar esta rota.');
     }
@@ -71,6 +71,10 @@ app.get('/dashboard', (req, res) => {
 app.get('/conta', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/conta.html'));
 });
+app.get('/repasse', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/repasse.html'));
+});
+
 // APIs
 app.use('/api/user', userRoutes);
 app.use('/api/store', storeRoutes);

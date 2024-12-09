@@ -74,6 +74,16 @@ class TalonController {
         }
     }
 
+    // static async insertEnvioTalon(req, res) {
+    //     const { id_loja, quantidade_enviada, data_envio } = req.body;
+    //     try {
+    //         const result = await manageTalonsModel.insertEnvioTalon(id_loja, quantidade_enviada, data_envio);
+    //         res.status(201).json({ message: 'Envio registrado com sucesso', envio: result.envio, talon: result.talon });
+    //     } catch (erro) {
+    //         res.status(500).json({ message: 'Não foi possível registrar o envio', error: erro.message });
+    //     }
+    // }
+
     static async insertEnvioTalon(req, res) {
         const { id_loja, quantidade_enviada, data_envio } = req.body;
         try {
@@ -84,6 +94,19 @@ class TalonController {
         }
     }
 
+    // static async insertRecebimentoTalon(req, res) {
+    //     const { id_talao, id_loja, quantidade_recebida, data_recebimento } = req.body;
+    //     try {
+    //         if (!id_talao || !id_loja || !quantidade_recebida || !data_recebimento) {
+    //             return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    //         }
+
+    //         const result = await manageTalonsModel.insertRecebimentoTalon(id_talao, id_loja, quantidade_recebida, data_recebimento);
+    //         res.status(201).json(result);
+    //     } catch (error) {
+    //         res.status(500).json({ error: 'Erro ao registrar recebimento de talão' });
+    //     }
+    // }
     static async insertRecebimentoTalon(req, res) {
         const { id_talao, id_loja, quantidade_recebida, data_recebimento } = req.body;
         try {
@@ -95,6 +118,54 @@ class TalonController {
             res.status(201).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Erro ao registrar recebimento de talão' });
+        }
+    }
+    // static async insertRepasseTalon(req, res){
+    //     const { id_talao, id_loja, quantidade_repassada } = req.body;
+    //     try {
+    //         if (!id_talao || !id_loja || !quantidade_repassada) {
+    //             return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    //         }
+
+    //         const result = await manageTalonsModel.insertRepasseTalon(id_talao, id_loja, quantidade_repassada);
+    //         res.status(201).json(result);
+    //     } catch (error) {
+    //         res.status(500).json({ error: 'Erro ao registrar repasse de talão' });
+    //     }
+    // }
+    // static async insertRepasseTalon(req, res) {
+    //     const { id_talao, id_loja, quantidade_repassada } = req.body;
+    //     try {
+    //         if (!id_talao || !id_loja || !quantidade_repassada) {
+    //             return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+    //         }
+    
+    //         const result = await manageTalonsModel.insertRepasseTalon(id_talao, id_loja, quantidade_repassada);
+    //         res.status(201).json(result);
+    //     } catch (error) {
+    //         console.error(error); // Adicionando log do erro
+    //         res.status(500).json({ error: 'Erro ao registrar repasse de talão', details: error.message });
+    //     }
+    // }
+    static async insertRepasseTalon(req, res) {
+        const { id_talao, id_loja, quantidade_repassada } = req.body;
+        try {
+            if (!id_talao || !id_loja || !quantidade_repassada) {
+                return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
+            }
+
+            const result = await manageTalonsModel.insertRepasseTalon(id_talao, id_loja, quantidade_repassada);
+            res.status(201).json(result);
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao registrar repasse de talão', details: error.message });
+        }
+    }
+    static async getTalonsRepassados(req, res) {
+        try {
+            const talonsRepassados = await manageTalonsModel.selectTalonsRepassados();
+            res.json(talonsRepassados);
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível selecionar talões repassados', error: erro.message });
         }
     }
 
@@ -124,6 +195,7 @@ class TalonController {
             res.status(500).json({ message: 'Não foi possível selecionar talões recebidos', error: erro.message });
         }
     }
+
 }
 
 module.exports = TalonController;
