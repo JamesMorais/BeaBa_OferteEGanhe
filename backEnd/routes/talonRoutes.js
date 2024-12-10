@@ -6,6 +6,7 @@ const authenticateToken = require('../middlewares/authMiddleware');
 // Rotas estáticas devem vir antes das dinâmicas
 router.get('/talons/enviados', authenticateToken, talonController.getTalonsEnviados);
 router.get('/talons/recebidos', authenticateToken, talonController.getTalonsRecebidos);
+router.get('/talons/envios/exportar', authenticateToken, talonController.exportTalonsEnviadosCSV);
 
 // Rotas dinâmicas
 router.get('/talons/:id_talao', authenticateToken, talonController.getTalonById);

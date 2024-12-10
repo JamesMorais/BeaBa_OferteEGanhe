@@ -1,5 +1,8 @@
 const talonModel = require('../models/talonModel');
 const manageTalonsModel = require('../models/manageTalonsModel');
+const { parse } = require('json2csv');
+const fs = require('fs');
+const path = require('path');
 
 class TalonController {
 
@@ -26,31 +29,34 @@ class TalonController {
         }
     }
 
-    // static async updateTalonEnvio(req, res) {
-    //     const id_talao = req.params.id_talao;
-    //     const { id_envio, id_loja, quantidade_enviada, data_envio } = req.body;
+    static async exportTalonsEnviadosCSV(req, res) {
+        try {
+            const talonsEnviados = await manageTalonsModel.selectTalonsEnviados();
 
-    //     if (!id_envio || !id_talao || !id_loja || !quantidade_enviada || !data_envio) {
-    //         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
-    //     }
+            // Converte os dados para CSV
+            const csv = parse(talonsEnviados);
 
-    //     try {
-    //         const updatedTalon = await manageTalonsModel.updateTalonsEnviados(data_envio);
-    //         res.status(200).json({ message: 'Talão enviado atualizado com sucesso.', updatedTalon });
-    //     } catch (error) {
-    //         console.error('Erro na atualização do talão enviado:', error);
-    //         res.status(500).json({ error: 'Erro ao atualizar o talão enviado.' });
-    //     }
-    // }
+            // Nome do arquivo CSV
+            const fileName = 'talons_enviados.csv';
+
+            // Configura os cabeçalhos para download do arquivo
+            res.header('Content-Type', 'text/csv');
+            res.attachment(fileName);
+            res.send(csv);
+
+        } catch (erro) {
+            res.status(500).json({ message: 'Erro ao gerar CSV dos talões enviados', error: erro.message });
+        }
+    }
 
     static async updateTalonEnvio(req, res) {
         const id_talao = req.params.id_talao;  // Agora pega o id_talao da URL
         const { data_envio } = req.body;  // Apenas data_envio é necessária
-    
+
         if (!id_talao || !data_envio) {
             return res.status(400).json({ error: 'id_talao e data_envio são obrigatórios.' });
         }
-    
+
         try {
             const updatedTalon = await manageTalonsModel.updateTalonsEnviados(id_talao, data_envio);  // Chama a função passando id_talao
             res.status(200).json({ message: 'Talão enviado atualizado com sucesso.', updatedTalon });
@@ -59,7 +65,7 @@ class TalonController {
             res.status(500).json({ error: 'Erro ao atualizar o talão enviado.' });
         }
     }
-    
+
 
     static async deleteTalon(req, res) {
         const id_talao = req.params.id_talao;
@@ -139,7 +145,7 @@ class TalonController {
     //         if (!id_talao || !id_loja || !quantidade_repassada) {
     //             return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
     //         }
-    
+
     //         const result = await manageTalonsModel.insertRepasseTalon(id_talao, id_loja, quantidade_repassada);
     //         res.status(201).json(result);
     //     } catch (error) {

@@ -139,7 +139,8 @@
 
         #btnNewPls,
         #btnNew,
-        #btnNewPlse {
+        #btnNewPlse,
+        #exportButton {
             background-color: #204637;
             border-color: #204637;
         }
@@ -274,6 +275,9 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                    <button class="btn btn-primary" id="exportButton">
+                        Exportar Dados
+                    </button>
                 </div>
             </main>
         </div>
@@ -383,7 +387,7 @@
                     const data = await response.json();
                     alert(data.message); // Exibe a mensagem de sucesso
                     // Redirecionar ou atualizar a página após o logout
-                    window.location.href = '/'; // Redireciona para a página inicial ou login
+                    window.location.href = '/login'; // Redireciona para a página inicial ou login
                 } else {
                     const errorData = await response.json();
                     alert(errorData.message || 'Erro ao fazer logout');
@@ -393,7 +397,9 @@
                 alert('Erro ao fazer logout');
             }
         });
-
+        document.getElementById('exportButton').addEventListener('click', function () {
+            window.location.href = 'http://127.0.0.1:3000/taloes/recebidos';
+        });
 
         // Chama a função toda vez que o modal de cadastro de estoque for aberto
         document.getElementById('modalCadastrarRecebimento').addEventListener('show.bs.modal', fetchAndRenderStoresSelect);

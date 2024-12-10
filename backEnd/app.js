@@ -74,6 +74,16 @@ app.get('/conta', (req, res) => {
 app.get('/repasse', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/repasse.html'));
 });
+app.get('/redefinir-senha', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/enviaEmail.html'));
+});
+app.get('/link-enviado', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/envioLink.html'));
+});
+app.get('/reset-password/:token', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/redefinicao.html'));
+});
+
 
 // APIs
 app.use('/api/user', userRoutes);

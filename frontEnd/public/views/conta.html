@@ -320,7 +320,7 @@
                     const data = await response.json();
                     alert(data.message); // Exibe a mensagem de sucesso
                     // Redirecionar ou atualizar a página após o logout
-                    window.location.href = '/'; // Redireciona para a página inicial ou login
+                    window.location.href = '/login'; // Redireciona para a página inicial ou login
                 } else {
                     const errorData = await response.json();
                     alert(errorData.message || 'Erro ao fazer logout');
@@ -330,6 +330,7 @@
                 alert('Erro ao fazer logout');
             }
         });
+        
 
     </script>
 </body>
