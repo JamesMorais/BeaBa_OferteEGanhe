@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
     res.send('Servidor rodando!');
 });
 
-app.get('/usuario', authenticateToken, authorizePermission(18), (req, res) => {
+app.get('/usuario', authenticateToken, authorizePermission(1,18), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontEnd/public/views/cadastroUsuario.html'));
 });
 
@@ -79,8 +79,8 @@ app.get('/dashboard', authenticateToken, authorizePermission(18), (req, res) => 
 app.get('/conta', authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/conta.html'));
 });
-app.get('/repasse', authenticateToken, (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/public/views/repasse.html'));
+app.get('/manutencao', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/public/views/manutencao.html'));
 });
 app.get('/redefinir-senha', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/enviaEmail.html'));

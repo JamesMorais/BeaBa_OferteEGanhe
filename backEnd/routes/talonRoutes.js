@@ -19,6 +19,6 @@ router.put('/talons/edit/:id_talao', /*authenticateToken,*/ talonController.upda
 router.delete('/delete/:id_talao', /*authenticateToken,*/ talonController.deleteTalon);
 router.post('/envio', /*authenticateToken,*/ talonController.insertEnvioTalon);
 router.post('/recebimento', /*authenticateToken,*/ talonController.insertRecebimentoTalon);
-router.post('/repasse', /*authenticateToken,*/ talonController.insertRepasseTalon);
-
+router.post('/manutencao', /*authenticateToken,*/ talonController.insertRepasseTalon);
+router.post('/manutencao/solicitacao', /*authenticateToken,*/ talonController.insertSolicitacaoTalon);
 module.exports = router;

@@ -112,7 +112,7 @@
 
         a.sidebar-link:hover {
             background-color: rgba(255, 255, 255, 0.075);
-            border-left: 3px solid #3b7ddd;
+            border-left: 3px solid #10754B;
         }
 
         #sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after {
@@ -144,8 +144,44 @@
             border-color: #204637;
         }
 
+        #btnNewPls:hover,
+        #btnNew:hover,
+        #btnNewPlse:hover {
+            background-color: #286f4a;
+            border-color: #286f4a;
+            transform: scale(1.05);
+        }
+
         .table-responsive {
             overflow: hidden;
+        }
+
+        .card {
+            height: 200px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        #first-card {
+            background: linear-gradient(180deg, #96bb39,#69a841,#399053);
+        }
+        #second-card {
+            background: linear-gradient(180deg, #dc9018, #d37119, #ab5035);
+
+        }
+        #third-card {
+            background: linear-gradient(180deg, #decf02, #cdd01b, #b3a921);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card i {
+            font-size: 3rem;
+            color: #232323;
+            margin-bottom: 0.5rem;
         }
 
         @media (max-width: 768px) {
@@ -164,7 +200,7 @@
                     <i class="bi bi-grid"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="#">Oferte & Ganhe</a>
+                    <a href="/conta">Oferte & Ganhe</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
@@ -219,9 +255,9 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="/repasse" class="sidebar-link">
-                        <i class="bi bi-arrow-return-right"></i>
-                        <span>Repasse</span>
+                    <a href="/manutencao" class="sidebar-link">
+                        <i class="bi bi-arrow-left-right"></i>
+                        <span>Manutenção</span>
                     </a>
                 </li>
                 <hr>
@@ -249,29 +285,34 @@
                         class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
                         <h3 class="fw-bold fs-4 mb-3 mb-md-0">DashBoard</h3>
                     </div>
+                    <br>
+                    <br>
                     <div class="row">
                         <!-- Card 1 -->
                         <div class="col-md-4 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body">
+                                <div class="card-body" id="first-card">
+                                    <i class="bi bi-person"></i>
                                     <h5 class="card-title text-muted">Usuários Cadastrados</h5>
                                     <h2 class="card-text fw-bold" id="userCount">0</h2>
                                 </div>
                             </div>
                         </div>
-                        <!-- Card 2 -->
+
                         <div class="col-md-4 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body">
+                                <div class="card-body" id="second-card">
+                                    <i class="bi bi-shop"></i>
                                     <h5 class="card-title text-muted">Lojas Cadastradas</h5>
                                     <h2 class="card-text fw-bold" id="storeCount">0</h2>
                                 </div>
                             </div>
                         </div>
-                        <!-- Card 3 -->
+
                         <div class="col-md-4 mb-4">
                             <div class="card shadow-sm border-0">
-                                <div class="card-body">
+                                <div class="card-body" id="third-card">
+                                    <i class="bi bi-people"></i>
                                     <h5 class="card-title text-muted">Perfis Cadastrados</h5>
                                     <h2 class="card-text fw-bold" id="profileCount">0</h2>
                                 </div>

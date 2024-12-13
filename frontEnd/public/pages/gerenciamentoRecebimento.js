@@ -61,7 +61,7 @@ async function fetchAndRenderRecebimentos() {
                 <td>${talao.id_talao}</td>
                 <td>${talao.nome_loja}</td>
                 <td>${talao.quantidade_recebida}</td>
-                <td>${new Date(talao.data_recebimento).toLocaleDateString()}</td>
+                <td>${new Date(talao.data_recebimento_real).toLocaleDateString()}</td>
                 <td>${talao.id_recebimento}</td>
                 <td>${talao.status || 'Não definido'}</td>
                 <td>

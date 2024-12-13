@@ -39,6 +39,68 @@ formCadastrarEnvio.addEventListener('submit', async (event) => {
 let dataTable = null;
 
 // Função para buscar e exibir envios
+// async function fetchAndRenderEnvios() {
+//     try {
+//         const response = await fetch('http://localhost:3000/api/talon/talons/enviados', {
+//             method: 'GET',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             }
+//         });
+
+//         const taloes = await response.json();
+//         const tableBody = document.querySelector('table tbody');
+
+//         // Limpa a tabela
+//         tableBody.innerHTML = '';
+
+//         // Adiciona as linhas na tabela
+//         taloes.forEach(talao => {
+//             const row = document.createElement('tr');
+//             row.innerHTML = `
+//                 <td>${talao.id_talao}</td>
+//                 <td>${talao.nome_loja}</td>
+//                 <td>${talao.quantidade_enviada}</td>
+//                 <td>${new Date(talao.data_talao_envio).toLocaleDateString()}</td>
+//                 <td>${new Date(talao.hora_envio).toLocaleTimeString()}</td>
+//                 <td>${talao.id_envio}</td>
+//                 <td>${talao.status || 'Não definido'}</td>
+//                 <td>
+//                     <button class="btn btn-sm me-1" onclick="editEnvio(${talao.id_talao})">
+//                         <i class="lni lni-pencil"></i>
+//                     </button>
+//                     <button class="btn btn-sm me-1" onclick="deleteEnvio(${talao.id_talao})">
+//                         <i class="bi bi-trash"></i>
+//                     </button>
+//                 </td>
+//             `;
+//             tableBody.appendChild(row);
+//         });
+
+//         // Reinicializa o DataTables
+//         if (dataTable) {
+//             dataTable.destroy(); // Destrói a instância anterior
+//         }
+
+//         dataTable = $('.table').DataTable({
+//             rowReorder: true,
+//             paging: true,
+//             pageLength: 5,
+//             pagingType: 'simple', // Itens por página
+//             responsive: true, // Ativa responsividade
+//             lengthMenu: [5], // Opções de itens por página
+//             language: {
+//                 url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+//             },
+//             stateSave: true
+//         });
+//         console.log('Tabela renderizada com sucesso.');
+
+//     } catch (error) {
+//         console.error('Erro ao carregar envios:', error);
+//         alert('Erro ao carregar envios. Tente novamente mais tarde.');
+//     }
+// }
 async function fetchAndRenderEnvios() {
     try {
         const response = await fetch('http://localhost:3000/api/talon/talons/enviados', {
@@ -49,6 +111,8 @@ async function fetchAndRenderEnvios() {
         });
 
         const taloes = await response.json();
+        console.log(taloes); // Verifique os dados retornados
+
         const tableBody = document.querySelector('table tbody');
 
         // Limpa a tabela
@@ -61,7 +125,8 @@ async function fetchAndRenderEnvios() {
                 <td>${talao.id_talao}</td>
                 <td>${talao.nome_loja}</td>
                 <td>${talao.quantidade_enviada}</td>
-                <td>${new Date(talao.data_talao_envio).toLocaleDateString()}</td>
+                <td>${new Date(talao.data_envio_real).toLocaleDateString()}</td>
+                <td>${new Date(talao.hora_envio).toLocaleTimeString()}</td>
                 <td>${talao.id_envio}</td>
                 <td>${talao.status || 'Não definido'}</td>
                 <td>
@@ -85,11 +150,11 @@ async function fetchAndRenderEnvios() {
             rowReorder: true,
             paging: true,
             pageLength: 5,
-            pagingType: 'simple', // Itens por página
-            responsive: true, // Ativa responsividade
-            lengthMenu: [5], // Opções de itens por página
+            pagingType: 'simple',
+            responsive: true,
+            lengthMenu: [5],
             language: {
-                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json"
             },
             stateSave: true
         });

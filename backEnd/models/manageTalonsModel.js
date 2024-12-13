@@ -125,6 +125,17 @@ async function insertRepasseTalon(id_talao, id_loja, quantidade_repassada) {
         client.release();
     }
 }
+async function insertSolicitacaoTalons(id_loja){
+    const query = `INSERT INTO public.solicitacao_envio_talao(id_loja) VALUES ($1)`;
+    const value = [id_loja]
+    try {
+        const newSolicitacao = await pool.query(query, value);
+        return newSolicitacao.rows;
+    } catch (error) {
+        console.error('Erro ao criar solicitação:', error);
+        throw error;
+    }
+}
 async function selectTalonsRecebidos() {
     const query = `
     SELECT 
@@ -159,6 +170,7 @@ async function selectTalonsEnviados() {
             t.data_envio AS data_talao_envio,
             e.quantidade_enviada,
             e.data_envio AS data_envio_real,
+            e.hora_envio,
             t.status, -- Coluna de status adicionada
             l.nome_loja
         FROM 
@@ -178,13 +190,14 @@ async function selectTalonsEnviados() {
     }
 }
 async function updateTalonsEnviados(id_talao, data_envio) {
+    const hora_envio = new Date(); 
     const updateQuery = `
         UPDATE public.envio_talao
-        SET data_envio = $2
+        SET data_envio = $2, hora_envio = $3
         WHERE id_talao = $1
         RETURNING *;
     `;
-    const values = [id_talao, data_envio];
+    const values = [id_talao, data_envio, hora_envio];
 
     try {
         const result = await pool.query(updateQuery, values);
@@ -259,5 +272,6 @@ module.exports = {
     selectTalonsEnviados,
     updateTalonsEnviados,
     selectTalonsRepassados,
-    selectTalonEnviadoById
+    selectTalonEnviadoById,
+    insertSolicitacaoTalons
 };

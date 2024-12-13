@@ -174,6 +174,19 @@ class TalonController {
             res.status(500).json({ message: 'Não foi possível selecionar talões repassados', error: erro.message });
         }
     }
+    static async insertSolicitacaoTalon(req, res){
+        const {id_loja} = req.body;
+        try {
+            if (!id_loja) {
+                return res.status(400).json({ error: 'O campo loja é obrigatório' });
+            } 
+
+            const result = await manageTalonsModel.insertSolicitacaoTalons(id_loja);
+            res.status(201).json(result);
+        } catch (error) {
+            res.status(500).json({ error: 'Erro ao registrar solicitação de talão', details: error.message });
+        }
+    }
 
     static async getTalonsEnviados(req, res) {
         try {
