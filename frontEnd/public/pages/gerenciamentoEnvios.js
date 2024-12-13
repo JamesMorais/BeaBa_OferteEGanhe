@@ -38,69 +38,7 @@ formCadastrarEnvio.addEventListener('submit', async (event) => {
 
 let dataTable = null;
 
-// Função para buscar e exibir envios
-// async function fetchAndRenderEnvios() {
-//     try {
-//         const response = await fetch('http://localhost:3000/api/talon/talons/enviados', {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             }
-//         });
 
-//         const taloes = await response.json();
-//         const tableBody = document.querySelector('table tbody');
-
-//         // Limpa a tabela
-//         tableBody.innerHTML = '';
-
-//         // Adiciona as linhas na tabela
-//         taloes.forEach(talao => {
-//             const row = document.createElement('tr');
-//             row.innerHTML = `
-//                 <td>${talao.id_talao}</td>
-//                 <td>${talao.nome_loja}</td>
-//                 <td>${talao.quantidade_enviada}</td>
-//                 <td>${new Date(talao.data_talao_envio).toLocaleDateString()}</td>
-//                 <td>${new Date(talao.hora_envio).toLocaleTimeString()}</td>
-//                 <td>${talao.id_envio}</td>
-//                 <td>${talao.status || 'Não definido'}</td>
-//                 <td>
-//                     <button class="btn btn-sm me-1" onclick="editEnvio(${talao.id_talao})">
-//                         <i class="lni lni-pencil"></i>
-//                     </button>
-//                     <button class="btn btn-sm me-1" onclick="deleteEnvio(${talao.id_talao})">
-//                         <i class="bi bi-trash"></i>
-//                     </button>
-//                 </td>
-//             `;
-//             tableBody.appendChild(row);
-//         });
-
-//         // Reinicializa o DataTables
-//         if (dataTable) {
-//             dataTable.destroy(); // Destrói a instância anterior
-//         }
-
-//         dataTable = $('.table').DataTable({
-//             rowReorder: true,
-//             paging: true,
-//             pageLength: 5,
-//             pagingType: 'simple', // Itens por página
-//             responsive: true, // Ativa responsividade
-//             lengthMenu: [5], // Opções de itens por página
-//             language: {
-//                 url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
-//             },
-//             stateSave: true
-//         });
-//         console.log('Tabela renderizada com sucesso.');
-
-//     } catch (error) {
-//         console.error('Erro ao carregar envios:', error);
-//         alert('Erro ao carregar envios. Tente novamente mais tarde.');
-//     }
-// }
 async function fetchAndRenderEnvios() {
     try {
         const response = await fetch('http://localhost:3000/api/talon/talons/enviados', {
@@ -111,14 +49,14 @@ async function fetchAndRenderEnvios() {
         });
 
         const taloes = await response.json();
-        console.log(taloes); // Verifique os dados retornados
+        console.log(taloes); 
 
         const tableBody = document.querySelector('table tbody');
 
-        // Limpa a tabela
+   
         tableBody.innerHTML = '';
 
-        // Adiciona as linhas na tabela
+
         taloes.forEach(talao => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -141,7 +79,6 @@ async function fetchAndRenderEnvios() {
             tableBody.appendChild(row);
         });
 
-        // Reinicializa o DataTables
         if (dataTable) {
             dataTable.destroy(); // Destrói a instância anterior
         }
@@ -183,11 +120,11 @@ function editEnvio(id_talao) {
     .then(response => response.json())
     .then(envio => {
         if (envio && envio.length > 0) {
-            // Preencher os campos do modal com os dados do talão
-            const envioData = envio[0]; // Assumindo que o retorno seja um array de objetos
+     
+            const envioData = envio[0]; 
 
             document.getElementById('id_talao_editar').value = envioData.id_talao;
-            document.getElementById('data_envio_editar').value = envioData.data_envio_real; // Preenche a data de envio
+            document.getElementById('data_envio_editar').value = envioData.data_envio_real; 
             
             // Exibir o modal
             const modalEditEnvio = new bootstrap.Modal(document.getElementById('modalEditarEnvio'));
@@ -204,12 +141,12 @@ function editEnvio(id_talao) {
 document.getElementById('form-editar-envio').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    // Captura os dados do formulário
+
     const id_talao = document.getElementById('id_talao_editar').value;
     const data_envio = document.getElementById('data_envio_editar').value;
 
     const envioData = {
-        data_envio,  // Apenas a data de envio será enviada para atualização
+        data_envio,  
     };
 
     try {
@@ -226,8 +163,8 @@ document.getElementById('form-editar-envio').addEventListener('submit', async fu
 
         if (response.ok) {
             alert('Envio atualizado com sucesso!');
-            fetchAndRenderEnvios();  // Atualiza a tabela ou a lista de envios
-            document.getElementById('modalEditarEnvio').querySelector('.btn-close').click(); // Fecha o modal
+            fetchAndRenderEnvios();  
+            document.getElementById('modalEditarEnvio').querySelector('.btn-close').click(); 
         } else {
             alert(`Erro ao atualizar envio: ${result.message}`);
         }

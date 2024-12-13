@@ -297,10 +297,6 @@
                 </div>
                 <div class="modal-body p-5 pt-0">
                     <form id="form-cadastrar-estoque">
-                        <!-- <div class="form-floating mb-3">
-                            <input type="text" class="form-control rounded-3" id="id_loja" placeholder="ID da Loja">
-                            <label for="id_loja">ID da Loja</label>
-                        </div> -->
                         <div class="form-floating mb-3">
                             <select class="form-select" id="select-lojas" aria-label="Selecionar Loja">
                                 <option selected disabled>Carregando lojas...</option>
@@ -375,7 +371,7 @@
         hamBurger.addEventListener("click", function () {
             document.querySelector("#sidebar").classList.toggle("expand");
         });
-        // Função para buscar as lojas e preencher o campo select
+ 
         async function fetchAndRenderStoresSelect() {
             try {
                 const response = await fetch('http://localhost:3000/api/store/stores', {
@@ -390,14 +386,14 @@
               
                 const selectLojas = document.getElementById('select-lojas');
 
-                // Limpa as opções do select
+    
                 selectLojas.innerHTML = '<option selected disabled>Selecione a Loja</option>';
 
-                // Preenche as opções com as lojas cadastradas
+        
                 lojas.forEach(loja => {
                     const option = document.createElement('option');
-                    option.value = loja.id_loja;  // Valor do ID da loja
-                    option.textContent = `${loja.id_loja} - ${loja.nome_loja}`;  // Texto a ser exibido
+                    option.value = loja.id_loja; 
+                    option.textContent = `${loja.id_loja} - ${loja.nome_loja}`;  
                     selectLojas.appendChild(option);
                 });
             } catch (error) {
@@ -436,7 +432,7 @@
         });
 
 
-        // Chama a função toda vez que o modal de cadastro de estoque for aberto
+   
         document.getElementById('modalCadastrarEstoque').addEventListener('show.bs.modal', fetchAndRenderStoresSelect);
 
 

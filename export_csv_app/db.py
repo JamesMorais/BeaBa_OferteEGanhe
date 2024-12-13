@@ -9,7 +9,7 @@ def get_connection():
             database='oferte_e_ganhe',
             user='postgres',
             password='KATYqueen111',
-            port='5433'  # Porta especificada diretamente no código
+            port='5433' 
         )
     except Exception as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
@@ -17,7 +17,7 @@ def get_connection():
 
 def fetch_data(query):
     """Executa uma consulta no banco e retorna os dados."""
-    conn = None  # Inicializa a variável conn como None
+    conn = None  
     try:
         conn = get_connection()
         cursor = conn.cursor(cursor_factory=RealDictCursor)

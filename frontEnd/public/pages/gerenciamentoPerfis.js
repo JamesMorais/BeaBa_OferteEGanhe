@@ -2,7 +2,7 @@ const formCadastrarPerfil = document.getElementById('form-cadastrar-perfil');
 const tableBodyPerfis = document.querySelector('#tablePerfis tbody');
 let dataTablePerfis = null;
 
-// Função para buscar e renderizar perfis na tabela
+
 async function fetchAndRenderPerfis() {
     try {
         const response = await fetch('http://localhost:3000/api/profile/profiles', {
@@ -37,18 +37,18 @@ async function fetchAndRenderPerfis() {
 
 
         if (dataTablePerfis) {
-            dataTablePerfis.destroy();  // Destroi a instância anterior do DataTable
+            dataTablePerfis.destroy();  
         }
 
         dataTablePerfis = $('#tablePerfis').DataTable({
             rowReorder: true,
             paging: true,
             pageLength: 5,
-            pagingType: 'simple', // Itens por página
-            responsive: true, // Ativa responsividade
-            lengthMenu: [5], // Opções de itens por página
+            pagingType: 'simple', 
+            responsive: true, 
+            lengthMenu: [5], 
             language: {
-                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" 
             },
             stateSave: true
         });
@@ -58,62 +58,7 @@ async function fetchAndRenderPerfis() {
     }
 }
 
-// async function fetchAndRenderPerfis() {
-//     try {
-//         const response = await fetch('http://localhost:3000/api/profile/profiles', {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//             }
-//         });
 
-//         const perfis = await response.json();
-
-//         // Limpa a tabela
-//         tableBodyPerfis.innerHTML = '';
-
-//         // Adiciona as linhas na tabela
-//         perfis.forEach(perfil => {
-//             const row = document.createElement('tr');
-//             row.innerHTML = `
-//                 <td>${perfil.id_perfil}</td>
-//                 <td>${perfil.nome_perfil}</td>
-//                 <td>${perfil.descricao}</td>
-//                 <td>
-//                     <button class="btn btn-sm me-1" data-bs-toggle="modal" data-bs-target="#modalEditarPerfil" data-id-perfil="${perfil.id_perfil}">
-//                         <i class="lni lni-pencil"></i>
-//                     </button>
-//                     <button class="btn btn-sm me-1" onclick="deletePerfil(${perfil.id_perfil})">
-//                         <i class="bi bi-trash"></i>
-//                     </button>
-//                 </td>
-//             `;
-//             tableBodyPerfis.appendChild(row);
-//         });
-
-//         if (dataTablePerfis) {
-//             dataTablePerfis.destroy();  // Destroi a instância anterior do DataTable
-//         }
-
-//         dataTablePerfis = $('#tablePerfis').DataTable({
-//             rowReorder: true,
-//             paging: true,
-//             pageLength: 5,
-//             pagingType: 'simple', // Itens por página
-//             responsive: true, // Ativa responsividade
-//             lengthMenu: [5], // Opções de itens por página
-//             language: {
-//                 url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
-//             },
-//             stateSave: true
-//         });
-//     } catch (error) {
-//         console.error('Erro ao carregar perfis:', error);
-//         alert('Erro ao carregar perfis. Tente novamente mais tarde.');
-//     }
-// }
-
-// Função para cadastrar um novo perfil
 if (formCadastrarPerfil) {
     formCadastrarPerfil.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -160,7 +105,7 @@ if (formCadastrarPerfil) {
 
 
 
-// Função para excluir um perfil
+
 function deletePerfil(id_perfil) {
     if (confirm('Tem certeza que deseja excluir este perfil?')) {
         fetch(`http://localhost:3000/api/profile/delete/${id_perfil}`, {
@@ -172,7 +117,7 @@ function deletePerfil(id_perfil) {
             .then(response => {
                 if (response.ok) {
                     alert('Perfil excluído com sucesso!');
-                    fetchAndRenderPerfis(); // Atualiza a tabela
+                    fetchAndRenderPerfis(); 
                 } else {
                     alert('Erro ao excluir perfil');
                 }

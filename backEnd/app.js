@@ -9,7 +9,6 @@ const storeRoutes = require('../backEnd/routes/storeRoutes');
 const talonRoutes = require('../backEnd/routes/talonRoutes');
 const profileRoutes = require('../backEnd/routes/profileRoutes');
 const stockRoutes = require('../backEnd/routes/stockRoutes');
-const viewRoutes = require('../backEnd/routes/viewRoutes');
 const dashboardRoutes = require('../backEnd/routes/dashboardRoutes');
 const authenticateToken = require('../backEnd/middlewares/authMiddleware');
 const authorizePermission = require('../backEnd/middlewares/authorizePermission');

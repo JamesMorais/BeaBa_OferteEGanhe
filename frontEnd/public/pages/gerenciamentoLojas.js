@@ -3,7 +3,7 @@ const form = document.getElementById('registration-form');
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    // Captura os valores dos campos
+
     const id_loja = document.getElementById('codigo').value;
     const nome_loja = document.getElementById('name').value;
 
@@ -13,7 +13,7 @@ form.addEventListener('submit', async (event) => {
     }
 
 
-    // Prepara os dados para envio
+
     const storeData = {
         id_loja,
         nome_loja,
@@ -44,7 +44,7 @@ form.addEventListener('submit', async (event) => {
 
 
 function editStore(id_loja) {
-    // Enviar uma solicitação para buscar os dados do usuário com base na matrícula
+
     fetch(`http://localhost:3000/api/store/stores/${id_loja}`, {
         method: 'GET',
         // headers: {
@@ -54,7 +54,7 @@ function editStore(id_loja) {
         .then(response => response.json())
         .then(loja => {
             if (loja) {
-                // Preencher os campos do modal com os dados do usuário
+
                 document.getElementById('edit-matricula').value = loja.id_loja;
                 document.getElementById('edit-name').value = loja.nome_loja;
 
@@ -104,8 +104,8 @@ document.getElementById('edit-user-form').addEventListener('submit', async funct
 
         if (response.ok) {
             alert('Loja atualizada com sucesso!');
-            fetchAndRenderStores();  // Atualiza a tabela
-            document.getElementById('modalEditUser').querySelector('.btn-close').click(); // Fecha o modal
+            fetchAndRenderStores();  
+            document.getElementById('modalEditUser').querySelector('.btn-close').click();
         } else {
             alert(`Erro ao atualizar Loja: ${result.message}`);
         }

@@ -1,21 +1,21 @@
 const form = document.getElementById('form-cadastrar-perfilAssc');
 
-if (form) { // Verifica se o formulário existe
+if (form) { 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Captura os valores dos campos
-        const id_perfil = document.getElementById('select-perfis').value; // pega o id_perfil
+
+        const id_perfil = document.getElementById('select-perfis').value; 
         const matricula = document.getElementById('matricula').value;
 
-        // Verifica se os campos estão preenchidos
+  
         if (!id_perfil || !matricula) {
             alert('Por favor, preencha todos os campos.');
             return;
         }
 
         const asscData = {
-            id_perfil, // Renomeado para corresponder ao que o servidor espera
+            id_perfil, 
             matricula,
         };
 
@@ -45,10 +45,8 @@ if (form) { // Verifica se o formulário existe
     console.error('Formulário não encontrado.');
 }
 
-// PARTE PARA RENDERIZAR TABELA DE ASSOCIAÇÃO PERFIL E USUÁRIO
 
 let dataTable = null;
-// Função para buscar e exibir estoques
 async function fetchAndRenderAsscPerfil() {
     try {
         const response = await fetch('http://localhost:3000/api/profile/associated', {
@@ -65,7 +63,7 @@ async function fetchAndRenderAsscPerfil() {
         // Limpa a tabela
         tableBody.innerHTML = '';
 
-        // Adiciona as linhas na tabela
+
         perfisAssc.forEach(perfilAssc => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -84,16 +82,16 @@ async function fetchAndRenderAsscPerfil() {
 
         });
         if (dataTable) {
-            dataTable.destroy();  // Destroi a instância anterior do DataTable
+            dataTable.destroy();  
         }
 
         dataTable = $('.table').DataTable({
             rowReorder: true,
             paging: true,
             pageLength: 5,
-            pagingType: 'simple', // Itens por página
-            responsive: true, // Ativa responsividade
-            lengthMenu: [5], // Opções de itens por página
+            pagingType: 'simple', 
+            responsive: true, 
+            lengthMenu: [5], 
             language: {
                 url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
             },
@@ -141,13 +139,11 @@ function editPerfilAssc(matricula) {
         return response.json();
     })
     .then((data) => {
-        // Verifica se os dados foram retornados corretamente
-        if (data && data.matricula && data.id_perfil) {
-            // Preenche os campos do modal com os dados retornados
-            document.getElementById('edit-select-perfilAssc').value = data.id_perfil; // Preenche com o id_perfil
-            document.getElementById('edit-matricula').value = data.matricula; // Preenche com a matrícula
 
-            // Abre o modal de edição
+        if (data && data.matricula && data.id_perfil) {
+            document.getElementById('edit-select-perfilAssc').value = data.id_perfil; 
+            document.getElementById('edit-matricula').value = data.matricula; 
+
             const modalEditarPerfilAssc = new bootstrap.Modal(document.getElementById('modalEditarPerfilAssc'));
             modalEditarPerfilAssc.show();
         } else {

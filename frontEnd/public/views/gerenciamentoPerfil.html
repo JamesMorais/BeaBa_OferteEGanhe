@@ -411,7 +411,7 @@
 
                 const transacoes = await response.json();
                 const checkboxContainer = document.getElementById(containerId);
-                checkboxContainer.innerHTML = ""; // Limpa os checkboxes existentes
+                checkboxContainer.innerHTML = ""; 
 
                 if (Array.isArray(transacoes)) {
                     transacoes.forEach((transacao) => {
@@ -447,12 +447,12 @@
         });
 
         document.getElementById("modalEditarPerfil").addEventListener("show.bs.modal", function (event) {
-            const button = event.relatedTarget;  // Botão que abriu o modal
-            const id_perfil = button.getAttribute("data-id-perfil");  // Obtém o ID do perfil do botão
+            const button = event.relatedTarget;  
+            const id_perfil = button.getAttribute("data-id-perfil");  
 
             if (id_perfil) {
-                this.setAttribute("data-id-perfil", id_perfil);  // Atribui o ID ao modal
-                editPerfil(id_perfil);  // Chama a função para editar o perfil com o ID correto
+                this.setAttribute("data-id-perfil", id_perfil);  
+                editPerfil(id_perfil);  
             } else {
                 console.error("ID do perfil não encontrado no botão.");
             }
@@ -476,11 +476,11 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Preenche os campos do formulário com os dados do perfil
+                  
                     document.getElementById("edit-nome-perfil").value = data.nome_perfil || "";
                     document.getElementById("edit-descricao").value = data.descricao || "";
 
-                    // Renderiza os checkboxes com as transações associadas
+                  
                     const checkboxContainer = document.getElementById("checkbox-transacoes-editar");
                     checkboxContainer.innerHTML = "";
 

@@ -113,12 +113,10 @@
     </div>
     <script src="../pages/redefinicao.js"></script>
     <script>
-        // Captura o token da URL
-        // const urlParams = new URLSearchParams(window.location.search);
-        // const token = urlParams.get('token');
+
         const token = window.location.pathname.split('/').pop();
 
-        // Define o valor do campo oculto
+
         document.getElementById('token').value = token;
     </script>
 </body>

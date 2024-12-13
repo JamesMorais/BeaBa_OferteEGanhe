@@ -141,7 +141,7 @@ function editStock(id_loja) {
 document.getElementById('form-editar-estoque').addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    // Captura o valor da loja (por exemplo, "1 - Loja 1") e extrai apenas o número
+
     const id_loja = document.getElementById('edit-select-lojas').value.split(' - ')[0];  // Pega só o número da loja
     const quantidade_recomendada = document.getElementById('edit-quantidade-recomendada').value;
     const quantidade_minima = document.getElementById('edit-quantidade-minima').value;
@@ -176,7 +176,7 @@ document.getElementById('form-editar-estoque').addEventListener('submit', async 
     }
 });
 
-// Função para deletar um estoque
+
 function deleteStock(id_loja) {
     if (confirm('Tem certeza que deseja excluir este estoque?')) {
         fetch(`http://localhost:3000/api/stock/delete/stock/${id_loja}`, {
@@ -197,5 +197,4 @@ function deleteStock(id_loja) {
     }
 }
 
-// Chama a função ao carregar a página
 document.addEventListener('DOMContentLoaded', fetchAndRenderStocks);

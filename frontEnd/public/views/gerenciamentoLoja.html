@@ -373,9 +373,9 @@
         });
 
         const tableBody = document.querySelector('table tbody');
-        let dataTable = null;  // Variável para armazenar a instância do DataTable
+        let dataTable = null;  
 
-        // Função para buscar usuários e preencher a tabela
+       
         async function fetchAndRenderStores() {
             try {
                 const response = await fetch('http://localhost:3000/api/store/stores', {
@@ -392,10 +392,10 @@
 
                 const lojas = await response.json();
 
-                // Limpar o corpo da tabela antes de adicionar novos dados
+               
                 tableBody.innerHTML = '';
 
-                // Itera sobre os usuários e cria linhas na tabela
+                
                 lojas.forEach(loja => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
@@ -413,20 +413,20 @@
                     tableBody.appendChild(row);
                 });
 
-                // Verifica se o DataTable já está inicializado
+                
                 if (dataTable) {
-                    dataTable.destroy();  // Destroi a instância anterior do DataTable
+                    dataTable.destroy();  
                 }
 
                 dataTable = $('.table').DataTable({
                     rowReorder: true,
                     paging: true,
                     pageLength: 5,
-                    pagingType: 'simple', // Itens por página
-                    responsive: true, // Ativa responsividade
-                    lengthMenu: [5], // Opções de itens por página
+                    pagingType: 'simple', 
+                    responsive: true, 
+                    lengthMenu: [5], 
                     language: {
-                        url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+                        url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" 
                     },
                     stateSave: true
                 });
@@ -453,7 +453,7 @@
                     .then(response => {
                         if (response.ok) {
                             alert('Loja excluída com sucesso!');
-                            fetchAndRenderStores(); // Atualiza a tabela
+                            fetchAndRenderStores(); 
                         } else {
                             alert('Erro ao excluir Loja');
                         }
@@ -462,12 +462,12 @@
             }
         }
         document.getElementById('logout-btn').addEventListener('click', async (event) => {
-            event.preventDefault(); // Previne o comportamento padrão do link
+            event.preventDefault(); 
 
             try {
                 const response = await fetch('http://localhost:3000/api/user/logout', {
                     method: 'POST',
-                    credentials: 'include', // Inclui cookies na requisição
+                    credentials: 'include', 
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -475,9 +475,8 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    alert(data.message); // Exibe a mensagem de sucesso
-                    // Redirecionar ou atualizar a página após o logout
-                    window.location.href = '/login'; // Redireciona para a página inicial ou login
+                    alert(data.message); 
+                    window.location.href = '/login'; 
                 } else {
                     const errorData = await response.json();
                     alert(errorData.message || 'Erro ao fazer logout');
@@ -489,7 +488,6 @@
         });
 
 
-        // Chama a função ao carregar a página
         document.addEventListener('DOMContentLoaded', fetchAndRenderStores);
     </script>
 

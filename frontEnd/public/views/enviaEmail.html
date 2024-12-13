@@ -125,7 +125,7 @@
 
                 if (response.ok) {
                     alert('Um link de redefinição de senha foi enviado para seu email.');
-                    window.location.href = '/link-enviado'; // Redireciona para página de confirmação
+                    window.location.href = '/link-enviado';
                 } else {
                     const error = await response.json();
                     alert(`Erro: ${error.message}`);

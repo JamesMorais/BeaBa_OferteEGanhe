@@ -75,18 +75,18 @@ async function fetchAndRenderRecebimentos() {
 
         // Reinicializa o DataTables
         if (dataTable) {
-            dataTable.destroy(); // Destrói a instância anterior
+            dataTable.destroy(); 
         }
 
         dataTable = $('.table').DataTable({
             rowReorder: true,
             paging: true,
             pageLength: 5,
-            pagingType: 'simple', // Itens por página
-            responsive: true, // Ativa responsividade
-            lengthMenu: [5], // Opções de itens por página
+            pagingType: 'simple', 
+            responsive: true, 
+            lengthMenu: [5], 
             language: {
-                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" // URL corrigida
+                url: "https://cdn.datatables.net/plug-ins/2.1.8/i18n/pt-BR.json" 
             },
             stateSave: true
         });

@@ -3,24 +3,18 @@ const form = document.getElementById('registration-form');
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    // Captura os valores dos campos
+
     const nome = document.getElementById('name').value;
     const matricula = document.getElementById('matricula').value;
     const email = document.getElementById('email').value;
     const senha = document.getElementById('password').value;
-    // const dataCadastro = document.getElementById('data_cadastro').value;
 
-    // Verifica se a data foi preenchida e ajusta o formato para 'DD/MM/YYYY'
-    // const [ano, mes, dia] = dataCadastro.split('-');
-    // const dataFormatada = `${dia}/${mes}/${ano}`;
-
-    // Prepara os dados para envio
     const userData = {
         nome,
         matricula,
         email,
         senha,
-        // data_cadastro: dataFormatada, // Usa a data formatada
+
     };
 
     try {
@@ -49,9 +43,9 @@ form.addEventListener('submit', async (event) => {
 
 
 
-// Função para abrir o modal de edição com os dados do usuário
+
 function editUser(matricula) {
-    // Enviar uma solicitação para buscar os dados do usuário com base na matrícula
+
     fetch(`http://localhost:3000/api/user/users/${matricula}`, {
         method: 'GET',
         // headers: {
@@ -61,11 +55,11 @@ function editUser(matricula) {
     .then(response => response.json())
     .then(user => {
         if (user) {
-            // Preencher os campos do modal com os dados do usuário
+   
             document.getElementById('edit-name').value = user.nome;
             document.getElementById('edit-matricula').value = user.matricula;
             document.getElementById('edit-email').value = user.email;
-            document.getElementById('edit-password').value = ''; // Deixe o campo de senha vazio para o usuário editar se quiser
+            document.getElementById('edit-password').value = ''; 
             
             // Exibir o modal
             const modalEditUser = new bootstrap.Modal(document.getElementById('modalEditUser'));
@@ -93,7 +87,7 @@ document.getElementById('edit-user-form').addEventListener('submit', async funct
     const userData = {
         nome,
         email,
-        senha: senha || undefined, // Envia a senha apenas se ela for preenchida
+        senha: senha || undefined, 
     };
 
     try {

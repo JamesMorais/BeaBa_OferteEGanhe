@@ -317,7 +317,7 @@
         </div>
     </div>
 
-    <!-- Modal para editar Perfil Associação-->
+   
     <div class="modal fade" id="modalEditarPerfilAssc" tabindex="-1" aria-labelledby="modalEditarPerfilAsscLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -376,17 +376,17 @@
 
                 const perfis = await response.json();
 
-                // Seleciona o elemento select
+                
                 const selectPerfis = document.getElementById(selectId);
 
-                // Limpa as opções do select
+               
                 selectPerfis.innerHTML = '<option selected disabled>Selecione o Perfil</option>';
 
-                // Preenche as opções com os perfis cadastrados
+                
                 perfis.forEach(perfil => {
                     const option = document.createElement('option');
-                    option.value = perfil.id_perfil;  // Valor do ID do perfil
-                    option.textContent = `${perfil.id_perfil} - ${perfil.nome_perfil}`;  // Texto a ser exibido
+                    option.value = perfil.id_perfil;  
+                    option.textContent = `${perfil.id_perfil} - ${perfil.nome_perfil}`;  
                     selectPerfis.appendChild(option);
                 });
             } catch (error) {
@@ -396,12 +396,12 @@
         }
 
         document.getElementById('logout-btn').addEventListener('click', async (event) => {
-            event.preventDefault(); // Previne o comportamento padrão do link
+            event.preventDefault(); 
 
             try {
                 const response = await fetch('http://localhost:3000/api/user/logout', {
                     method: 'POST',
-                    credentials: 'include', // Inclui cookies na requisição
+                    credentials: 'include', 
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -409,9 +409,8 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    alert(data.message); // Exibe a mensagem de sucesso
-                    // Redirecionar ou atualizar a página após o logout
-                    window.location.href = '/login'; // Redireciona para a página inicial ou login
+                    alert(data.message); 
+                    window.location.href = '/login'; 
                 } else {
                     const errorData = await response.json();
                     alert(errorData.message || 'Erro ao fazer logout');
@@ -423,12 +422,11 @@
         });
 
 
-        // Chama a função toda vez que o modal de cadastro de Perfil for aberto
         document.getElementById('modalCadastrarPerfilAssc').addEventListener('show.bs.modal', function () {
             fetchAndRenderPerfisSelect('select-perfis');
         });
 
-        // Chama a função toda vez que o modal de edição for aberto
+
         document.getElementById('modalEditarPerfilAssc').addEventListener('show.bs.modal', function () {
             fetchAndRenderPerfisSelect('edit-select-perfilAssc');
         });
