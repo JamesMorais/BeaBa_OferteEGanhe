@@ -23,10 +23,18 @@ app.use(cors({
 }));
 
 // Rota protegida teste
+// app.get(
+//     '/secure-endpoint',
+//     authenticateToken,
+//     authorizePermission('Visualizar Histórico de Envios'),
+//     (req, res) => {
+//         res.send('Você tem permissão para acessar esta rota.');
+//     }
+// );
 app.get(
     '/secure-endpoint',
     authenticateToken,
-    authorizePermission('Visualizar Histórico de Envios'),
+    authorizePermission(1), // Supondo que 1 seja o ID da transação que você deseja verificar
     (req, res) => {
         res.send('Você tem permissão para acessar esta rota.');
     }
@@ -40,38 +48,38 @@ app.get('/', (req, res) => {
     res.send('Servidor rodando!');
 });
 
-app.get('/usuario', (req, res) => {
+app.get('/usuario', authenticateToken, authorizePermission(18), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontEnd/public/views/cadastroUsuario.html'));
 });
 
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/login.html'));
 });
-app.get('/loja', (req, res) => {
+app.get('/loja', authenticateToken, authorizePermission(13), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoLoja.html'));
 });
-app.get('/envio', (req, res) => {
+app.get('/envio', authenticateToken, authorizePermission(13), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/envioTalao.html'));
 });
-app.get('/recebimento', (req, res) => {
+app.get('/recebimento', authenticateToken, authorizePermission(13, 14, 15, 16, 17), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/recebimentoTalao.html'));
 });
-app.get('/perfil', (req, res) => {
+app.get('/perfil', authenticateToken, authorizePermission(7,8, 9), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoPerfil.html'));
 });
-app.get('/associacao', (req, res) => {
+app.get('/associacao', authenticateToken, authorizePermission(7,8, 9), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoPerfilAssc.html'));
 });
-app.get('/estoque', (req, res) => {
+app.get('/estoque', authenticateToken, authorizePermission(10, 11, 12), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/gerenciamentoEstoque.html'));
 });
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', authenticateToken, authorizePermission(18), (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/dashboard.html'));
 });
-app.get('/conta', (req, res) => {
+app.get('/conta', authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/conta.html'));
 });
-app.get('/repasse', (req, res) => {
+app.get('/repasse', authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/public/views/repasse.html'));
 });
 app.get('/redefinir-senha', (req, res) => {

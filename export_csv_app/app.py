@@ -18,3 +18,4 @@ if __name__ == '__main__':
     
     
 # Lembrar que quando for executar, vai no diretório pai e executa python -m export_csv_app.app
+ 

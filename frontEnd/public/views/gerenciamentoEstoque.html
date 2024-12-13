@@ -379,7 +379,7 @@
 
                 const lojas = await response.json();
 
-                // Seleciona o elemento select
+              
                 const selectLojas = document.getElementById('select-lojas');
 
                 // Limpa as opções do select
@@ -399,12 +399,12 @@
         }
 
         document.getElementById('logout-btn').addEventListener('click', async (event) => {
-            event.preventDefault(); // Previne o comportamento padrão do link
+            event.preventDefault(); 
 
             try {
                 const response = await fetch('http://localhost:3000/api/user/logout', {
                     method: 'POST',
-                    credentials: 'include', // Inclui cookies na requisição
+                    credentials: 'include', 
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -412,9 +412,8 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    alert(data.message); // Exibe a mensagem de sucesso
-                    // Redirecionar ou atualizar a página após o logout
-                    window.location.href = '/login'; // Redireciona para a página inicial ou login
+                    alert(data.message); 
+                    window.location.href = '/login'; 
                 } else {
                     const errorData = await response.json();
                     alert(errorData.message || 'Erro ao fazer logout');

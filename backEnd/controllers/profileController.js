@@ -1,5 +1,5 @@
-const { selectProfiles, selectProfile, insertProfile, updateProfile, deleteProfile } = require('../models/profileModel');
-const { associateProfile, selectProfilesUsers, deleteProfileUser, selectProfileUser, updatePerfilAssc } = require('../models/associationModel')
+const { selectProfiles, selectProfile, insertProfile, updateProfile, deleteProfile, insertPermissoesPerfil, updatePermissoesPerfil } = require('../models/profileModel');
+const { associateProfile, selectProfilesUsers, deleteProfileUser, selectProfileUser, updatePerfilAssc, selectTransacoes, selectTransacoesById } = require('../models/associationModel')
 
 class ProfileController {
 
@@ -34,7 +34,7 @@ class ProfileController {
             res.status(500).json({ message: 'Não foi possível selecionar perfis', error: erro.message });
         }
     }
-    static async getAssociatedProfilesUsersById(req, res){
+    static async getAssociatedProfilesUsersById(req, res) {
         const matricula = req.params.matricula;
         try {
             const perfilUser = await selectProfileUser(matricula);
@@ -47,43 +47,90 @@ class ProfileController {
             res.status(500).json({ message: 'Não foi possível selecionar perfil associado', error: erro.message });
         }
     }
+
+
     static async registerProfile(req, res) {
-        const { nome_perfil, descricao } = req.body;
+        const { nome_perfil, descricao, transacoes } = req.body;
+        console.log(req.body);
         try {
             const novoPerfil = await insertProfile(nome_perfil, descricao);
+
+            // Agora insira as transações associadas ao novo perfil
+            if (transacoes && transacoes.length > 0) {
+                await insertPermissoesPerfil(novoPerfil.id_perfil, transacoes); // Chamada correta
+            }
+
             res.status(201).json({ message: 'Perfil cadastrado com sucesso!', profile: novoPerfil });
         } catch (erro) {
+            console.error('Erro ao cadastrar perfil:', erro); // Adicione esta linha
             res.status(500).json({ message: 'Não foi possível cadastrar perfil', error: erro.message });
         }
     }
 
+
+
+
     static async updateProfile(req, res) {
         const id_perfil = req.params.id_perfil;
-        const { nome_perfil, descricao } = req.body;
+        const { nome_perfil, descricao, transacoes } = req.body;
+
         try {
             const perfilAtualizado = await updateProfile(nome_perfil, descricao, id_perfil);
+
             if (perfilAtualizado) {
+                if (transacoes && transacoes.length > 0) {
+                    await updatePermissoesPerfil(id_perfil, transacoes);
+                }
                 res.status(200).json({ message: 'Perfil atualizado com sucesso!', profile: perfilAtualizado });
             } else {
                 res.status(404).json({ message: 'Perfil não encontrado' });
             }
         } catch (erro) {
-            res.status(500).json({ message: 'Não foi possível atualizar perfil', error: erro.message });
+            console.error(erro.message);
+            res.status(500).json({ message: 'Não foi possível atualizar o perfil', error: erro.message });
         }
     }
+
+
+    static async getProfileWithTransacoes(req, res) {
+        const id_perfil = req.params.id_perfil;
+
+        // Verifica se o id_perfil é válido
+        if (!id_perfil || isNaN(id_perfil)) {
+            return res.status(400).json({ message: "ID do perfil inválido" });
+        }
+
+        try {
+            const perfil = await selectProfile(id_perfil); // Busca os dados do perfil
+            if (!perfil) {
+                return res.status(404).json({ message: "Perfil não encontrado" });
+            }
+
+            const transacoes = await selectTransacoesById(id_perfil) || []; // Busca as transações associadas
+            res.json({ ...perfil, transacoes });
+        } catch (erro) {
+            console.error("Erro ao buscar perfil e transações:", erro.message);
+            res.status(500).json({ message: "Erro ao buscar perfil e transações", error: erro.message });
+        }
+    }
+
+
+
+
+
     static async updateProfileAssociated(req, res) {
         const matricula = req.params.matricula;
         const { id_perfil } = req.body;
-    
+
         // Validate input
         if (!id_perfil) {
             return res.status(400).json({ message: 'ID do perfil é obrigatório.' });
         }
-    
+
         try {
             // Call the function that updates the associated profile in the database
             const perfilAtualizado = await updatePerfilAssc(matricula, id_perfil); // Ensure this function is defined
-    
+
             if (perfilAtualizado) {
                 res.status(200).json({ message: 'Perfil Associado atualizado com sucesso!', profile: perfilAtualizado });
             } else {
@@ -140,6 +187,27 @@ class ProfileController {
             res.status(204).send();
         } catch (erro) {
             res.status(500).json({ message: 'Não foi possível deletar essa associação', error: erro.message });
+        }
+    }
+    static async getTransacoes(req, res) {
+        try {
+            const transacoes = await selectTransacoes();
+            res.json(transacoes);
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível selecionar transações', error: erro.message });
+        }
+    }
+    static async getTransacoesByid(req, res) {
+        const id_perfil = req.params.id_perfil;
+        try {
+            const transacao = await selectTransacoesById(id_perfil);
+            if (transacao) {
+                res.json(transacao);
+            } else {
+                res.status(404).json({ message: 'Perfil com transações não encontrado' });
+            }
+        } catch (erro) {
+            res.status(500).json({ message: 'Não foi possível selecionar essa transação', error: erro.message });
         }
     }
 }

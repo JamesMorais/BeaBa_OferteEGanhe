@@ -1,19 +1,5 @@
 const pool = require('../config/dataBase');
 
-// async function associateProfile(matricula, idPerfil) {
-//     const query = `
-//         INSERT INTO associacao_perfil_usuario (matricula, id_perfil)
-//         VALUES ($1, $2)
-//     `;
-//     const values = [matricula, idPerfil];
-
-//     try {
-//         await pool.query(query, values);
-//     } catch (error) {
-//         console.error('Erro ao associar perfil ao usuário:', error.message);
-//         throw error;
-//     }
-// }
 async function associateProfile(matricula, idPerfil) {
     const query = `
         INSERT INTO associacao_perfil_usuario (matricula, id_perfil)
@@ -79,24 +65,8 @@ async function updatePerfilAssc(matricula, newIdPerfil) {
     }
 }
 
-// async function getProfilesForUser(matricula) {
-//     const query = `
-//         SELECT p.id_perfil, p.nome_perfil, p.descricao
-//         FROM associacao_perfil_usuario apu
-//         INNER JOIN perfil p ON apu.id_perfil = p.id_perfil
-//         WHERE apu.matricula = $1
-//     `;
-//     const values = [matricula];
 
-//     try {
-//         const res = await pool.query(query, values);
-//         return res.rows;
-//     } catch (error) {
-//         console.error('Erro ao buscar perfis do usuário:', error.message);
-//         throw error;
-//     }
-// }
-async function getProfilesForUser (matricula) {
+async function getProfilesForUser(matricula) {
     const query = `
         SELECT p.id_perfil, p.nome_perfil, p.descricao
         FROM associacao_perfil_usuario apu
@@ -115,64 +85,10 @@ async function getProfilesForUser (matricula) {
     }
 }
 
-// async function getPermissionsForUser(matricula) {
-//     const query = `
-//         SELECT t.nome_transacao
-//         FROM associacao_perfil_usuario apu
-//         INNER JOIN permissao_perfil pp ON apu.id_perfil = pp.id_perfil
-//         INNER JOIN transacao t ON pp.id_transacao = t.id_transacao
-//         WHERE apu.matricula = $1 AND pp.acesso = true
-//     `;
-//     const values = [matricula];
 
-//     try {
-//         const res = await pool.query(query, values);
-//         return res.rows.map(row => row.nome_transacao);
-//     } catch (error) {
-//         console.error('Erro ao buscar permissões do usuário:', error.message);
-//         throw error;
-//     }
-// }
-// async function getPermissionsForUser(matricula) {
-//     const query = `
-//         SELECT t.nome_transacao
-//         FROM associacao_perfil_usuario apu
-//         INNER JOIN permissao_perfil pp ON apu.id_perfil = pp.id_perfil
-//         INNER JOIN transacao t ON pp.id_transacao = t.id_transacao
-//         WHERE apu.matricula = $1 AND pp.acesso = true
-//     `;
-//     const values = [matricula];
-
-//     try {
-//         const res = await pool.query(query, values);
-//         return res.rows.map(row => row.nome_transacao); // Retorna apenas os nomes das transações
-//     } catch (error) {
-//         console.error('Erro ao buscar permissões do usuário:', error.message);
-//         throw error;
-//     }
-// }
-
-// async function getPermissionsForUser (matricula) {
-//     const query = `
-//         SELECT t.nome_transacao
-//         FROM associacao_perfil_usuario apu
-//         INNER JOIN permissao_perfil pp ON apu.id_perfil = pp.id_perfil
-//         INNER JOIN transacao t ON pp.id_transacao = t.id_transacao
-//         WHERE apu.matricula = $1 AND pp.acesso = true
-//     `;
-//     const values = [matricula];
-
-//     try {
-//         const res = await pool.query(query, values);
-//         return res.rows.map(row => row.nome_transacao); // Retorna apenas os nomes das transações
-//     } catch (error) {
-//         console.error('Erro ao buscar permissões do usuário:', error.message);
-//         throw error;
-//     }
-// }
-async function getPermissionsForUser (matricula) {
+async function getPermissionsForUser(matricula) {
     const query = `
-        SELECT t.nome_transacao
+        SELECT t.id_transacao
         FROM associacao_perfil_usuario apu
         INNER JOIN permissao_perfil pp ON apu.id_perfil = pp.id_perfil
         INNER JOIN transacao t ON pp.id_transacao = t.id_transacao
@@ -183,12 +99,36 @@ async function getPermissionsForUser (matricula) {
     try {
         const res = await pool.query(query, values);
         console.log('Permissões do usuário:', res.rows); // Log para verificar as permissões
-        return res.rows.map(row => row.nome_transacao);
+        return res.rows.map(row => row.id_transacao); // Retorna os IDs das transações
     } catch (error) {
         console.error('Erro ao buscar permissões do usuário:', error.message);
         throw error;
     }
 }
+async function selectTransacoes() {
+    try {
+        const res = await pool.query('SELECT * FROM transacao')
+        return res.rows;
+    } catch (erro) {
+        console.error('Não foi possível Selecionar transacoes', erro.message)
+    }
+}
+async function selectTransacoesById(id_perfil) {
+    const query = `
+    SELECT t.id_transacao, t.nome_transacao, t.descricao
+    FROM public.permissao_perfil pp
+    JOIN public.transacao t ON pp.id_transacao = t.id_transacao
+    WHERE pp.id_perfil = $1;`;
+    const value = [id_perfil];
+    try {
+        const res = await pool.query(query, value);
+        return res.rows; // Retorna todas as transações
+    } catch (erro) {
+        console.error('Não foi possível Selecionar transacoes', erro.message);
+    }
+}
 
-module.exports = { associateProfile, selectProfilesUsers, selectProfileUser, getProfilesForUser, getPermissionsForUser, deleteProfileUser, updatePerfilAssc };
+
+
+module.exports = { associateProfile, selectProfilesUsers, selectProfileUser, getProfilesForUser, getPermissionsForUser, deleteProfileUser, updatePerfilAssc, selectTransacoes, selectTransacoesById };
 

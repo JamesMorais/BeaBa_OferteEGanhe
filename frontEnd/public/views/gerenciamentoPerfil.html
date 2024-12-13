@@ -295,6 +295,12 @@
                             <input type="text" class="form-control rounded-3" id="nome_perfil" placeholder="Nome">
                             <label for="nome_perfil">Nome</label>
                         </div>
+                        <div class="mb-3">
+                            <label for="select-transacoes" class="form-label">IDs das Transações</label>
+                            <div id="checkbox-transacoes">
+                                <!-- Os checkboxes serão gerados aqui -->
+                            </div>
+                        </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control rounded-3" id="descricao" placeholder="Descrição">
                             <label for="descricao">Descrição</label>
@@ -327,6 +333,12 @@
                                 placeholder="Nome do Perfil">
                             <label for="edit-nome-perfil">Nome do perfil</label>
                         </div>
+                        <div class="mb-3">
+                            <label for="select-transacoes" class="form-label">IDs das Transações</label>
+                            <div id="checkbox-transacoes-editar">
+                                <!-- Os checkboxes serão gerados aqui -->
+                            </div>
+                        </div>
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control rounded-3" id="edit-descricao"
                                 placeholder="Descrição">
@@ -349,43 +361,193 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script src="../pages/gerenciamentoPerfis.js"></script>
-    <script>
-        const hamBurger = document.querySelector(".toggle-btn");
 
-        hamBurger.addEventListener("click", function () {
+    <script>
+        document.querySelector(".toggle-btn").addEventListener("click", function () {
             document.querySelector("#sidebar").classList.toggle("expand");
         });
-        document.getElementById('logout-btn').addEventListener('click', async (event) => {
-            event.preventDefault(); // Previne o comportamento padrão do link
 
+        document.getElementById("logout-btn").addEventListener("click", async (event) => {
+            event.preventDefault();
             try {
-                const response = await fetch('http://localhost:3000/api/user/logout', {
-                    method: 'POST',
-                    credentials: 'include', // Inclui cookies na requisição
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                const response = await fetch("http://localhost:3000/api/user/logout", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    alert(data.message); // Exibe a mensagem de sucesso
-                    // Redirecionar ou atualizar a página após o logout
-                    window.location.href = '/login'; // Redireciona para a página inicial ou login
+                    alert(data.message);
+                    window.location.href = "/login";
                 } else {
                     const errorData = await response.json();
-                    alert(errorData.message || 'Erro ao fazer logout');
+                    alert(errorData.message || "Erro ao fazer logout");
                 }
             } catch (error) {
-                console.error('Erro ao fazer logout:', error);
-                alert('Erro ao fazer logout');
+                console.error("Erro ao fazer logout:", error);
+                alert("Erro ao fazer logout");
             }
         });
-        document.getElementById('exportButton').addEventListener('click', function () {
-            window.location.href = 'http://127.0.0.1:3000/perfis';
+
+        document.getElementById("exportButton").addEventListener("click", function () {
+            window.location.href = "http://127.0.0.1:3000/perfis";
+        });
+
+        async function fetchAndRenderTransacoesSelect(containerId) {
+            try {
+                const response = await fetch("http://localhost:3000/api/profile/transacoes", {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                });
+
+                const transacoes = await response.json();
+                const checkboxContainer = document.getElementById(containerId);
+                checkboxContainer.innerHTML = ""; // Limpa os checkboxes existentes
+
+                if (Array.isArray(transacoes)) {
+                    transacoes.forEach((transacao) => {
+                        const checkbox = document.createElement("div");
+                        checkbox.classList.add("form-check");
+
+                        const input = document.createElement("input");
+                        input.type = "checkbox";
+                        input.classList.add("form-check-input");
+                        input.id = `transacao-${transacao.id_transacao}`;
+                        input.value = transacao.id_transacao;
+
+                        const label = document.createElement("label");
+                        label.classList.add("form-check-label");
+                        label.setAttribute("for", `transacao-${transacao.id_transacao}`);
+                        label.textContent = `${transacao.id_transacao} - ${transacao.nome_transacao}`;
+
+                        checkbox.appendChild(input);
+                        checkbox.appendChild(label);
+                        checkboxContainer.appendChild(checkbox);
+                    });
+                } else {
+                    console.warn("Nenhuma transação encontrada ou formato inválido.");
+                }
+            } catch (error) {
+                console.error("Erro ao carregar transações:", error);
+                alert("Erro ao carregar transações. Tente novamente mais tarde.");
+            }
+        }
+
+        document.getElementById("modalCadastrarPerfil").addEventListener("show.bs.modal", function () {
+            fetchAndRenderTransacoesSelect("checkbox-transacoes");
+        });
+
+        document.getElementById("modalEditarPerfil").addEventListener("show.bs.modal", function (event) {
+            const button = event.relatedTarget;  // Botão que abriu o modal
+            const id_perfil = button.getAttribute("data-id-perfil");  // Obtém o ID do perfil do botão
+
+            if (id_perfil) {
+                this.setAttribute("data-id-perfil", id_perfil);  // Atribui o ID ao modal
+                editPerfil(id_perfil);  // Chama a função para editar o perfil com o ID correto
+            } else {
+                console.error("ID do perfil não encontrado no botão.");
+            }
+        });
+
+
+
+        function openEditModal(id_perfil) {
+            const modalEditarPerfil = new bootstrap.Modal(document.getElementById("modalEditarPerfil"));
+            document.getElementById("modalEditarPerfil").setAttribute("data-id-perfil", id_perfil);
+            modalEditarPerfil.show();
+        }
+
+        async function editPerfil(id_perfil) {
+            try {
+                const response = await fetch(`http://localhost:3000/api/profile/profiles/details/${id_perfil}`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Preenche os campos do formulário com os dados do perfil
+                    document.getElementById("edit-nome-perfil").value = data.nome_perfil || "";
+                    document.getElementById("edit-descricao").value = data.descricao || "";
+
+                    // Renderiza os checkboxes com as transações associadas
+                    const checkboxContainer = document.getElementById("checkbox-transacoes-editar");
+                    checkboxContainer.innerHTML = "";
+
+                    if (Array.isArray(data.transacoes)) {
+                        data.transacoes.forEach((transacao) => {
+                            const checkbox = document.createElement("div");
+                            checkbox.classList.add("form-check");
+
+                            const input = document.createElement("input");
+                            input.type = "checkbox";
+                            input.classList.add("form-check-input");
+                            input.id = `transacao-${transacao.id_transacao}`;
+                            input.value = transacao.id_transacao;
+                            input.checked = true;
+
+                            const label = document.createElement("label");
+                            label.classList.add("form-check-label");
+                            label.setAttribute("for", `transacao-${transacao.id_transacao}`);
+                            label.textContent = `${transacao.id_transacao} - ${transacao.nome_transacao}`;
+
+                            checkbox.appendChild(input);
+                            checkbox.appendChild(label);
+                            checkboxContainer.appendChild(checkbox);
+                        });
+                    } else {
+                        console.warn("Transações ausentes ou formato inválido.");
+                    }
+                } else {
+                    alert(data.message || "Erro ao carregar dados do perfil.");
+                }
+            } catch (error) {
+                console.error("Erro ao carregar dados do perfil:", error);
+                alert("Erro ao carregar dados do perfil.");
+            }
+        }
+
+
+        document.getElementById("form-editar-perfil").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const id_perfil = document.getElementById("modalEditarPerfil").getAttribute("data-id-perfil");
+            if (!id_perfil) {
+                alert("ID do perfil não encontrado!");
+                return;
+            }
+
+            const nome_perfil = document.getElementById("edit-nome-perfil").value;
+            const descricao = document.getElementById("edit-descricao").value;
+
+            const transacoes = Array.from(document.querySelectorAll("#checkbox-transacoes-editar input:checked")).map(
+                (input) => input.value
+            );
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/profile/edit/profile/${id_perfil}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nome_perfil, descricao, transacoes }),
+                });
+
+                if (response.ok) {
+                    alert("Perfil atualizado com sucesso!");
+                    location.reload();
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.message || "Erro ao atualizar perfil.");
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar perfil:", error);
+                alert("Erro ao atualizar perfil.");
+            }
         });
 
     </script>
+
 </body>
 
 </html>
